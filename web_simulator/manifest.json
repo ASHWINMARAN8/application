@@ -1,0 +1,17 @@
+{
+  "name": "A.I.D.A. JARVIS & EDITH Personal AI",
+  "short_name": "A.I.D.A.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#04080e",
+  "theme_color": "#00f0ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "../assets/jarvis_hud.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

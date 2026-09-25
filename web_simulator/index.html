@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A.I.D.A. — JARVIS & EDITH Personal Offline AI (ENG / தமிழ் / Tanglish)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(console.error);
+    }
+  </script>
+</head>
+<body class="theme-jarvis">
+  <div class="hud-grid-overlay"></div>
+  <div class="hud-scanlines"></div>
+
+  <!-- Top Header Telemetry -->
+  <header class="hud-header">
+    <div class="telemetry-box left">
+      <div class="brand-title">
+        <span class="brand-sub">STARK PERSONAL A.I. // TACTICAL SUITE</span>
+        <h1 id="persona-title">JARVIS <span>OS v4.8</span></h1>
+      </div>
+      <div class="stat-pill"><span class="pulse-dot"></span> LOW-END OPTIMIZED</div>
+      <div class="stat-pill"><span class="mode-tag">MODE: 100% OFFLINE</span></div>
+    </div>
+
+    <!-- Central Switcher (JARVIS <-> EDITH) -->
+    <div class="persona-switch-container">
+      <button class="switch-btn active" id="btn-jarvis" onclick="switchPersona('jarvis')">
+        <span class="icon">⬢</span> JARVIS
+      </button>
+      <button class="switch-btn" id="btn-edith" onclick="switchPersona('edith')">
+        <span class="icon">◆</span> E.D.I.T.H.
+      </button>
+    </div>
+
+    <div class="telemetry-box right">
+      <div class="telemetry-metric">
+        <span class="lbl">LATENCY</span>
+        <span class="val" id="metric-latency">2.9 ms</span>
+      </div>
+      <div class="telemetry-metric">
+        <span class="lbl">RAM CONSUMPTION</span>
+        <span class="val">14 MB (Zero Lag)</span>
+      </div>
+      <div class="telemetry-metric">
+        <span class="lbl">TOUCHLESS UNLOCK</span>
+        <span class="val highlight">ACTIVE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main HUD Body -->
+  <main class="hud-main">
+    
+    <!-- Left Column: Tactical Phone Status & Device Mockup -->
+    <section class="hud-col left-panel">
+      <div class="panel-header">
+        <span class="corner-bracket top-left"></span>
+        <span class="corner-bracket top-right"></span>
+        <h3>DEVICE LINK // PHONE STATE</h3>
+      </div>
+      
+      <!-- Virtual Phone Display Mockup -->
+      <div class="phone-mockup" id="phone-display">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" id="phone-screen-content">
+          <!-- Flashlight Indicator Beam -->
+          <div class="flashlight-beam" id="flashlight-beam"></div>
+
+          <!-- Phone Lockscreen Overlay (Toggled during lock/unlock) -->
+          <div class="phone-lock-overlay" id="phone-lock-overlay" style="display: none;">
+            <div class="lock-icon">🔒</div>
+            <div class="lock-time" id="lock-time">19:30</div>
+            <div class="lock-hint">PHONE LOCKED</div>
+            <div class="lock-sub">Say: "phone ah unlock pannu"</div>
+          </div>
+
+          <div class="phone-status-bar">
+            <span id="phone-clock">19:30</span>
+            <span class="icons">📶 100% 🔋</span>
+          </div>
+
+          <!-- Active App / Simulation Canvas -->
+          <div class="phone-app-view" id="phone-app-view">
+            <div class="home-widget">
+              <div class="ai-avatar-mini" id="mini-arc"></div>
+              <div class="widget-greeting" id="widget-greeting">Personal AI Standby</div>
+              <div class="widget-sub">Zero-lag touchless voice control active</div>
+            </div>
+
+            <div class="phone-indicators">
+              <div class="indicator-item" id="ind-torch">
+                <span class="ind-icon">🔦</span>
+                <span class="ind-label">TORCH: <b id="torch-val">OFF</b></span>
+              </div>
+              <div class="indicator-item" id="ind-vol">
+                <span class="ind-icon">🔊</span>
+                <span class="ind-label">VOL: <b id="vol-val">65%</b></span>
+              </div>
+              <div class="indicator-item" id="ind-call">
+                <span class="ind-icon">📞</span>
+                <span class="ind-label">CALL: <b id="call-val">IDLE</b></span>
+              </div>
+            </div>
+
+            <!-- In-Phone Action Notification Banner -->
+            <div class="action-card" id="action-card">
+              <div class="card-icon" id="action-card-icon">⚡</div>
+              <div class="card-body">
+                <div class="card-title" id="action-card-title">Touchless System Ready</div>
+                <div class="card-desc" id="action-card-desc">Say "phone ah unlock pannu"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Telemetry Stats -->
+      <div class="device-stats-grid">
+        <div class="stat-card">
+          <span class="stat-name">BATTERY</span>
+          <span class="stat-data" id="stat-battery">88% (Optimal)</span>
+          <div class="progress-bar"><div class="fill" style="width: 88%;"></div></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-name">RAM FOOTPRINT</span>
+          <span class="stat-data" id="stat-audio-status">14 MB / 0% CPU</span>
+          <div class="progress-bar"><div class="fill glow" id="mic-fill" style="width: 15%;"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Center Column: Arc Reactor Core & Holographic Visualizer -->
+    <section class="hud-col center-panel">
+      <div class="arc-container">
+        <!-- Holographic Rings -->
+        <div class="orbital-ring ring-outer"></div>
+        <div class="orbital-ring ring-mid"></div>
+        <div class="orbital-ring ring-inner"></div>
+        <div class="hud-ticks"></div>
+
+        <!-- Central Core Reactor -->
+        <div class="arc-core" id="arc-reactor" onclick="triggerMic()">
+          <div class="core-glow"></div>
+          <div class="core-elements">
+            <div class="triangle"></div>
+            <div class="inner-circle">
+              <span class="core-icon" id="core-state-icon">🎙️</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="wake-word-hint">
+          <span class="tag">TOUCHLESS VOICE TRIGGER</span>
+          <span class="wake-text" id="wake-prompt">Say "Hey Jarvis" or tap reactor to speak</span>
+        </div>
+      </div>
+
+      <!-- Audio Frequency Spectrum Visualizer -->
+      <div class="visualizer-wrapper">
+        <div class="visualizer-label">
+          <span>AUDIO FREQUENCY SPECTRUM (TANGLISH / தமிழ் / ENG)</span>
+          <span id="speech-state">VOICE IDLE</span>
+        </div>
+        <canvas id="waveform-canvas" width="600" height="90"></canvas>
+      </div>
+
+      <!-- Live Speech Transcript & AI Speech Bubble -->
+      <div class="dialogue-box">
+        <div class="speech-bubble user-bubble" id="user-speech">
+          <span class="speaker-tag">YOU (VOICE)</span>
+          <p id="user-transcript">"Try saying: 'phone ah unlock pannu' or 'torch podu'"</p>
+        </div>
+        <div class="speech-bubble ai-bubble" id="ai-speech">
+          <span class="speaker-tag" id="ai-tag">JARVIS (PERSONAL AI)</span>
+          <p id="ai-response">Hello boss! Jarvis here. Low-end device layum lag illama smooth-ah run aaguren. Touchless unlock-um ready!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Command Matrix & Quick Action Tester -->
+    <section class="hud-col right-panel">
+      <div class="panel-header">
+        <span class="corner-bracket top-left"></span>
+        <span class="corner-bracket top-right"></span>
+        <h3>VOICE COMMAND TESTER // மும்மொழி</h3>
+      </div>
+
+      <div class="tab-selectors">
+        <button class="cmd-tab active" onclick="filterCommands('tanglish')">Tanglish</button>
+        <button class="cmd-tab" onclick="filterCommands('tamil')">தமிழ்</button>
+        <button class="cmd-tab" onclick="filterCommands('english')">English</button>
+        <button class="cmd-tab" onclick="filterCommands('all')">All</button>
+      </div>
+
+      <div class="commands-scroll-list" id="command-list">
+        
+        <!-- Touchless Unlock & Lock -->
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('phone ah unlock pannu')">
+          <div class="cmd-icon">🔓</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"phone ah unlock pannu"</span>
+            <span class="cmd-action">Touchless Screen Unlock (Without touching phone)</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('phone ah lock pannu')">
+          <div class="cmd-icon">🔒</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"phone ah lock pannu"</span>
+            <span class="cmd-action">Locks phone screen immediately</span>
+          </div>
+        </div>
+
+        <!-- Tanglish Commands -->
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('torch podu')">
+          <div class="cmd-icon">🔦</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"torch podu" / "torch ah off pannu"</span>
+            <span class="cmd-action">Replies: "Torch on panniten boss!"</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('amma ku call pannu')">
+          <div class="cmd-icon">📞</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"amma ku call pannu"</span>
+            <span class="cmd-action">Replies: "Amma ku ippo call panren boss."</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('ram ku whatsapp message anupu: na kelambiten')">
+          <div class="cmd-icon">💬</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"ram ku message anupu: na kelambiten"</span>
+            <span class="cmd-action">Sends WhatsApp in Tanglish</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('youtube open pannu')">
+          <div class="cmd-icon">🚀</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"youtube open pannu" / "insta open pannu"</span>
+            <span class="cmd-action">Replies: "YouTube open panren boss."</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('sound ah kootu')">
+          <div class="cmd-icon">🔊</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"sound ah kootu" / "volume korai"</span>
+            <span class="cmd-action">Replies: "Sound ah 80% ku kootiten boss."</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('battery evvalavu irukku?')">
+          <div class="cmd-icon">🔋</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"battery evvalavu irukku?"</span>
+            <span class="cmd-action">Replies: "Battery 88% irukku boss. Power super stable!"</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('epdi iruka boss?')">
+          <div class="cmd-icon">🤝</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"epdi iruka boss?"</span>
+            <span class="cmd-action">Human-like friendly banter</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('joke sollu')">
+          <div class="cmd-icon">😂</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"joke sollu"</span>
+            <span class="cmd-action">Tells an Iron-Man style funny joke</span>
+          </div>
+        </div>
+
+        <!-- Tamil Commands -->
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('போனை அன்லாக் பண்ணு')">
+          <div class="cmd-icon">🔓</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"போனை அன்லாக் பண்ணு"</span>
+            <span class="cmd-action">Touchless screen unlock in Tamil</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('டார்ச் போடு')">
+          <div class="cmd-icon">🔦</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"டார்ச் போடு" / "டார்ச் ஆன் பண்ணு"</span>
+            <span class="cmd-action">Turns on Phone Flashlight</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அம்மாவுக்கு கால் பண்ணு')">
+          <div class="cmd-icon">📞</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"அம்மாவுக்கு கால் பண்ணு"</span>
+            <span class="cmd-action">Initiates direct call to Mom</span>
+          </div>
+        </div>
+
+        <!-- English Commands -->
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Unlock phone')">
+          <div class="cmd-icon">🔓</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"Unlock phone" / "Wake up and unlock"</span>
+            <span class="cmd-action">Touchless Screen Unlock</span>
+          </div>
+        </div>
+
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Turn on flashlight')">
+          <div class="cmd-icon">🔦</div>
+          <div class="cmd-info">
+            <span class="cmd-phrase">"Turn on flashlight" / "Torch off"</span>
+            <span class="cmd-action">Hardware camera torch toggle</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Voice Input Bar -->
+      <div class="custom-input-box">
+        <input type="text" id="manual-text-input" placeholder="Say 'phone ah unlock pannu' or type here..." onkeypress="handleKeypress(event)">
+        <button id="send-btn" onclick="submitManualText()">EXECUTE</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Log Ticker -->
+  <footer class="hud-footer">
+    <div class="footer-tag">PERSONAL AI ENGINE</div>
+    <div class="log-ticker" id="log-ticker">
+      [00:00:01] A.I.D.A. Core running at 14MB RAM. Zero lag on low-end hardware. Touchless unlock ready.
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

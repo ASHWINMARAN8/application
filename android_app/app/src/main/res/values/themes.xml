@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base Application Theme -->
+    <style name="Theme.IronAssistant" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/jarvis_primary</item>
+        <item name="colorPrimaryVariant">@color/jarvis_secondary</item>
+        <item name="colorOnPrimary">@color/bg_black</item>
+        <item name="colorSecondary">@color/jarvis_accent</item>
+        <item name="android:statusBarColor">@color/bg_black</item>
+        <item name="android:navigationBarColor">@color/bg_black</item>
+        <item name="android:windowBackground">@color/bg_black</item>
+    </style>
+</resources>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">A.I.D.A. Assistant</string>
+    <string name="accessibility_service_description">Enables JARVIS and EDITH to execute voice commands automatically on your phone, such as touching buttons, sending WhatsApp messages, taking screenshots, and locking the screen without requiring root access or internet.</string>
+    <string name="channel_name">Iron Assistant Background Core</string>
+    <string name="channel_description">Continuous offline voice listener and wake-word detector.</string>
+    
+    <!-- UI Strings -->
+    <string name="system_nominal">SYSTEM // NOMINAL</string>
+    <string name="offline_mode">100% OFFLINE</string>
+    <string name="jarvis_title">JARVIS</string>
+    <string name="edith_title">E.D.I.T.H.</string>
+    <string name="listening_standby">Listening for wake command…</string>
+    <string name="tap_to_speak">Tap Arc Reactor or say wake-word</string>
+    <string name="permission_required">Grant permissions to allow full offline phone automation</string>
+</resources>
