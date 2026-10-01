@@ -2,6 +2,7 @@
 ### 100% Offline Personal Voice AI for Android (English, தமிழ் & Tanglish)
 
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Web%20Simulator-brightgreen)](#)
+[![Download APK](https://img.shields.io/badge/Download-A.I.D.A.%20APK%20(v1.0.0)-success?logo=android)](https://github.com/ASHWINMARAN8/application/releases/latest)
 [![Offline](https://img.shields.io/badge/Network-100%25%20Offline%20(Zero%20Data)-blue)](#)
 [![Languages](https://img.shields.io/badge/Languages-English%20%7C%20%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D%20%7C%20Tanglish-orange)](#)
 [![Personal AI](https://img.shields.io/badge/Tone-Personal%20Assistant%20(Human--like)-red)](#)
@@ -80,10 +81,17 @@ Your interactive browser simulator is active right now:
 
 ## 📲 Installing on Your Android Phone
 
-1. Open `e:\assistant\android_app` in **Android Studio**.
+### ⚡ Method 1: Download Pre-built APK (Quickest)
+1. Go to the [**Latest GitHub Releases**](https://github.com/ASHWINMARAN8/application/releases/latest) page.
+2. Under **Assets**, click to download **`AIDA-IronAssistant-v1.0.0.apk`**.
+3. Open the downloaded file on your Android device and tap **Install** (allow installation from unknown sources if prompted).
+4. Launch the app and grant **Microphone**, **Call**, **SMS**, and **Camera** permissions.
+5. Tap **"ENABLE PHONE AUTOMATION (ACCESSIBILITY)"** and toggle on **A.I.D.A. Assistant**.
+6. Ensure **English (India)** and **Tamil (India)** offline speech packs are installed under phone **Settings** → **Languages & input** → **Text-to-speech output**.
+
+### 🛠️ Method 2: Build APK from Source (Android Studio)
+1. Clone this repository or open `android_app` in **Android Studio**.
 2. Click **Build** → **Build APK(s)** (or connect phone via USB and click **Run**).
-3. Open the app on your phone, grant Microphone, Call, SMS, and Camera permissions.
-4. Tap **"ENABLE PHONE AUTOMATION (ACCESSIBILITY)"** and turn on **A.I.D.A. Assistant**.
-5. In phone **Settings** → **Languages & input** → **Text-to-speech output**, ensure **English (India)** and **Tamil (India)** offline voice packs are downloaded.
+3. Follow steps 4–6 above to configure permissions.
 
 Enjoy your hands-free, 100% offline personal Jarvis & Edith on your phone!
