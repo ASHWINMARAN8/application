@@ -679,3 +679,42 @@ function initCanvasVisualizer() {
 
   draw();
 }
+
+// ==========================================================================
+// PWA Installation & App Management
+// ==========================================================================
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const installBtn = document.getElementById('btn-install-pwa');
+  if (installBtn) {
+    installBtn.style.display = 'inline-flex';
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  const installBtn = document.getElementById('btn-install-pwa');
+  if (installBtn) {
+    installBtn.innerHTML = '<span>✅</span> APP INSTALLED';
+    installBtn.disabled = true;
+  }
+  showTacticalNotification('JOE ASSISTANT INSTALLED ON DEVICE');
+});
+
+function installPwaApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User installed JOE App');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    alert('To install JOE directly on your phone:\n\n1. On Android Chrome: Tap menu (⋮) -> "Install App" or "Add to Home screen"\n2. On iPhone Safari: Tap the Share button -> "Add to Home Screen"\n\nOnce added, JOE runs full-screen 24/7 like a native mobile app!');
+  }
+}
+

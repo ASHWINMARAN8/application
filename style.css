@@ -1058,3 +1058,57 @@ body {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ==========================================================================
+   App Install & APK Download Banner
+   ========================================================================== */
+.app-download-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px auto 4px auto;
+  max-width: 600px;
+  width: 95%;
+  flex-wrap: wrap;
+}
+
+.btn-app-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 32, 82, 0.15);
+  border: 1px solid var(--accent-color);
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 12px var(--glow-color);
+}
+
+.btn-app-action:hover {
+  background: var(--accent-color);
+  color: #03080e;
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px var(--accent-color);
+}
+
+.btn-app-action.apk-btn {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
+.btn-app-action.apk-btn:hover {
+  background: #00e5ff;
+  color: #03080e;
+  box-shadow: 0 0 20px #00e5ff;
+}
+

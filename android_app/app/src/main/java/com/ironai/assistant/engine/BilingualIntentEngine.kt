@@ -144,7 +144,7 @@ class BilingualIntentEngine {
         if (containsAny(lower, "நீ யாரு", "who are you", "உன் பெயர் என்ன", "what is your name", "ne yaaru", "unga name enna")) {
             return ParsedIntent(CommandType.IDENTITY_QUERY, language, input)
         }
-        if (containsAny(lower, "வணக்கம்", "hello", "hey", "hi", "காலை வணக்கம்", "good morning", "vanakkam", "hey jarvis", "edith")) {
+        if (containsAny(lower, "வணக்கம்", "hello", "hey", "hi", "காலை வணக்கம்", "good morning", "vanakkam", "hey joe", "joe", "edith", "hey jarvis", "ஜோ", "ஹேய் ஜோ")) {
             return ParsedIntent(CommandType.GREETING, language, input)
         }
 

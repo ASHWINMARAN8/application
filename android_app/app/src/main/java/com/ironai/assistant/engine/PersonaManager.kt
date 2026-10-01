@@ -45,14 +45,14 @@ class PersonaManager {
 
     val displayName: String
         get() = when (currentPersona) {
-            PersonaType.JARVIS -> "JARVIS"
-            PersonaType.EDITH -> "E.D.I.T.H."
+            PersonaType.JARVIS -> "JOE"
+            PersonaType.EDITH -> "JOE (E.D.I.T.H.)"
         }
 
     val systemSubTitle: String
         get() = when (currentPersona) {
-            PersonaType.JARVIS -> "STARK TACTICAL A.I. // JARVIS"
-            PersonaType.EDITH -> "STARK DEFENSE PROTOCOL // EDITH"
+            PersonaType.JARVIS -> "JOE EXECUTIVE SUITE // TACTICAL A.I."
+            PersonaType.EDITH -> "JOE E.D.I.T.H. PROTOCOL // TACTICAL SUITE"
         }
 
     // Time-aware Personal Greeting
@@ -68,20 +68,20 @@ class PersonaManager {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "$timeGreetingEng boss! Jarvis here. Unga phone complete control la irukku. Enna command execute pannanum?"
-                    PersonaType.EDITH -> "$timeGreetingEng boss. Edith tactical core ready. Solar defense and device controls standing by. Solunga boss!"
+                    PersonaType.JARVIS -> "$timeGreetingEng boss! Joe here. Unga phone complete control la irukku. Enna command execute pannanum?"
+                    PersonaType.EDITH -> "$timeGreetingEng boss. Joe E.D.I.T.H. tactical core ready. Tactical defense and phone controls standing by. Solunga boss!"
                 }
             }
             ResponseLanguage.TAMIL -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "வணக்கம் பாஸ். அனைத்து அமைப்புகளும் தயார் நிலையில் உள்ளன. என்ன கட்டளை?"
-                    PersonaType.EDITH -> "எடித் தற்காப்பு அமைப்பு தயார். ஆப்லைன் மோடில் உங்கள் குரல் கட்டளைக்காக காத்திருக்கிறேன்."
+                    PersonaType.JARVIS -> "வணக்கம் பாஸ். ஜோ அசிஸ்டன்ட் தயார் நிலையில் உள்ளது. என்ன கட்டளை?"
+                    PersonaType.EDITH -> "ஜோ எடித் தற்காப்பு அமைப்பு தயார். ஆப்லைன் மோடில் உங்கள் குரல் கட்டளைக்காக காத்திருக்கிறேன் பாஸ்."
                 }
             }
             ResponseLanguage.ENGLISH -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "$timeGreetingEng, sir. JARVIS online. All systems nominal. How may I assist you today?"
-                    PersonaType.EDITH -> "$timeGreetingEng, boss. E.D.I.T.H. standing by. Tactical systems ready for instructions."
+                    PersonaType.JARVIS -> "$timeGreetingEng, sir. JOE online. All tactical systems nominal. How may I assist you today?"
+                    PersonaType.EDITH -> "$timeGreetingEng, boss. JOE E.D.I.T.H. standing by. Tactical defense systems ready for instructions."
                 }
             }
         }
@@ -92,20 +92,20 @@ class PersonaManager {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "Naan unga personal AI assistant Jarvis, boss! Internet illama unga phone call, message, apps, torch, volume ellathayum voice commands la handle pannuven."
-                    PersonaType.EDITH -> "Naan Edith, boss! Unga personal tactical assistant. Voice commands moolama unga phone-ah instant-ah operate panna ready-ah iruken."
+                    PersonaType.JARVIS -> "Naan unga personal AI assistant Joe, boss! Internet illama unga phone call, message, apps, torch, volume ellathayum voice commands la handle pannuven."
+                    PersonaType.EDITH -> "Naan unga tactical AI assistant Joe, boss! Spider-Man EDITH maadhiri touchless voice commands moolama unga phone-ah instant-ah operate panna ready-ah iruken."
                 }
             }
             ResponseLanguage.TAMIL -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "நான் ஜார்விஸ். உங்கள் போனை முழுமையாக ஆப்லைனில் கட்டுப்படுத்தும் உங்கள் தனிப்பட்ட AI உதவியாளர்."
-                    PersonaType.EDITH -> "நான் எடித். உங்கள் போனை பாதுகாக்கவும் உங்கள் குரல் கட்டளைகளை ஆப்லைனில் இயக்கவும் உருவாக்கப்பட்ட தற்காப்பு AI."
+                    PersonaType.JARVIS -> "நான் ஜோ. உங்கள் போனை முழுமையாக ஆப்லைனில் கட்டுப்படுத்தும் உங்கள் தனிப்பட்ட AI உதவியாளர்."
+                    PersonaType.EDITH -> "நான் ஜோ எடித். உங்கள் போனை பாதுகாக்கவும் உங்கள் குரல் கட்டளைகளை ஆப்லைனில் இயக்கவும் உருவாக்கப்பட்ட தற்காப்பு AI பாஸ்."
                 }
             }
             ResponseLanguage.ENGLISH -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "I am JARVIS, your personal offline artificial intelligence. I manage your phone and execute your commands without requiring any internet connection."
-                    PersonaType.EDITH -> "I am E.D.I.T.H., your personal tactical assistant. Ready to secure and control your mobile device with your voice."
+                    PersonaType.JARVIS -> "I am JOE, your personal offline artificial intelligence. I manage your phone and execute your voice commands touchlessly without requiring internet."
+                    PersonaType.EDITH -> "I am JOE (E.D.I.T.H. Engine), your personal tactical assistant inspired by Spider-Man. Ready to secure and control your mobile device with your voice."
                 }
             }
         }

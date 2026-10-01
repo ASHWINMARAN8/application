@@ -2,18 +2,28 @@
 ### 100% Offline Personal Voice AI & Phone Simulator (English, தமிழ் & Tanglish)
 
 [![Live Website](https://img.shields.io/badge/Live%20Website-JOE%20(E.D.I.T.H.)-ff2052?style=for-the-badge&logo=googlechrome)](https://ashwinmaran8.github.io/application/)
-[![Platform](https://img.shields.io/badge/Platform-Mobile%20%7C%20PWA%20%7C%20Web-brightgreen)](#)
+[![Download APK](https://img.shields.io/badge/Download%20APK-JOE%20Android%20App-00e5ff?style=for-the-badge&logo=android)](https://github.com/ASHWINMARAN8/application/releases/download/v1.0.0/JOE-Tactical-AI-v1.0.0.apk)
+[![Platform](https://img.shields.io/badge/Platform-Android%20APK%20%7C%20PWA%20%7C%20Web-brightgreen)](#)
 [![Network](https://img.shields.io/badge/Network-100%25%20Offline%20(Zero%20Data)-blue)](#)
 [![Voice Engine](https://img.shields.io/badge/Voice-Spider--Man%20E.D.I.T.H.%20Cadence-orange)](#)
 [![Languages](https://img.shields.io/badge/Languages-English%20%7C%20%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D%20%7C%20Tanglish-yellow)](#)
 
 ---
 
-## 🌐 Experience JOE Live in Your Browser
+## 📲 Install & Run JOE on Your Phone
 
-Optimized for **mobile phone viewports** and desktop browsers:
+Choose your preferred way to install:
 
-👉 **[Launch JOE Live Website](https://ashwinmaran8.github.io/application/)**
+### Option 1: Direct Android App (APK) — Recommended for Full Phone Control
+1. **[📥 Download JOE Android APK (v1.0.0)](https://github.com/ASHWINMARAN8/application/releases/download/v1.0.0/JOE-Tactical-AI-v1.0.0.apk)**
+2. Tap the downloaded file to install on your Android device.
+3. Grant permissions for Microphone, Calls, SMS, and Torch.
+4. Enable **Accessibility Service** when prompted to allow hands-free voice automation.
+
+### Option 2: 1-Click Mobile Web App (PWA)
+1. Open 👉 **[JOE Live Web App](https://ashwinmaran8.github.io/application/)** on your phone's browser (Chrome or Safari).
+2. Tap the **"INSTALL PHONE APP"** button or browser menu (⋮) -> **"Install App"** / **"Add to Home Screen"**.
+3. JOE installs directly to your home screen and operates 24/7 full-screen with offline caching!
 
 ---
 
