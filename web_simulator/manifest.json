@@ -1,14 +1,14 @@
 {
-  "name": "PEPPER — Personal Voice AI & Phone Assistant",
-  "short_name": "PEPPER",
+  "name": "JOE — Tactical Voice AI Assistant (E.D.I.T.H.)",
+  "short_name": "JOE",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#04080e",
-  "theme_color": "#00f0ff",
+  "background_color": "#0c0406",
+  "theme_color": "#ff2052",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "./assets/jarvis_hud.jpg",
+      "src": "./assets/edith_hud.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
