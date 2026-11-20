@@ -3,10 +3,14 @@ package com.ironai.assistant.engine
 import java.util.Calendar
 
 /**
- * Manages the AI persona: JARVIS (Stark Industries) vs E.D.I.T.H. (Tactical Defense)
+ * Manages the Alexa AI persona: Echo Core (Smart Voice Assistant) vs Echo Show (Smart Hub)
  * Supports English, pure Tamil (தமிழ்), and natural conversational Tanglish.
+ * 100% Offline Edge Intelligence.
  */
 enum class PersonaType {
+    ECHO_CORE,
+    ECHO_SHOW,
+    // Aliases for legacy compatibility
     JARVIS,
     EDITH
 }
@@ -18,41 +22,41 @@ enum class ResponseLanguage {
 }
 
 class PersonaManager {
-    var currentPersona: PersonaType = PersonaType.JARVIS
+    var currentPersona: PersonaType = PersonaType.ECHO_CORE
     var preferredLanguage: ResponseLanguage = ResponseLanguage.TANGLISH
 
     fun togglePersona(): PersonaType {
-        currentPersona = if (currentPersona == PersonaType.JARVIS) {
-            PersonaType.EDITH
+        currentPersona = if (currentPersona == PersonaType.ECHO_CORE || currentPersona == PersonaType.JARVIS) {
+            PersonaType.ECHO_SHOW
         } else {
-            PersonaType.JARVIS
+            PersonaType.ECHO_CORE
         }
         return currentPersona
     }
 
-    // Voice modulation parameters for Android TextToSpeech
+    // Alexa voice modulation parameters for Android TextToSpeech
     val speechPitch: Float
         get() = when (currentPersona) {
-            PersonaType.JARVIS -> 0.85f // Sophisticated, gentleman tone
-            PersonaType.EDITH -> 1.10f  // Crisp, tactical tone
+            PersonaType.ECHO_CORE, PersonaType.JARVIS -> 1.02f // Warm, polite, articulate Alexa voice
+            PersonaType.ECHO_SHOW, PersonaType.EDITH -> 1.05f  // Crisp, smart hub tone
         }
 
     val speechRate: Float
         get() = when (currentPersona) {
-            PersonaType.JARVIS -> 0.95f
-            PersonaType.EDITH -> 1.05f
+            PersonaType.ECHO_CORE, PersonaType.JARVIS -> 0.95f
+            PersonaType.ECHO_SHOW, PersonaType.EDITH -> 0.96f
         }
 
     val displayName: String
         get() = when (currentPersona) {
-            PersonaType.JARVIS -> "JOE"
-            PersonaType.EDITH -> "JOE (E.D.I.T.H.)"
+            PersonaType.ECHO_CORE, PersonaType.JARVIS -> "ALEXA"
+            PersonaType.ECHO_SHOW, PersonaType.EDITH -> "ALEXA (ECHO SHOW)"
         }
 
     val systemSubTitle: String
         get() = when (currentPersona) {
-            PersonaType.JARVIS -> "JOE EXECUTIVE SUITE // TACTICAL A.I."
-            PersonaType.EDITH -> "JOE E.D.I.T.H. PROTOCOL // TACTICAL SUITE"
+            PersonaType.ECHO_CORE, PersonaType.JARVIS -> "AMAZON ECHO SUITE // EDGE AI"
+            PersonaType.ECHO_SHOW, PersonaType.EDITH -> "ECHO SHOW HUB // SMART DISPLAY"
         }
 
     // Time-aware Personal Greeting
@@ -62,26 +66,26 @@ class PersonaManager {
             in 5..11 -> "Good morning"
             in 12..16 -> "Good afternoon"
             in 17..21 -> "Good evening"
-            else -> "Late night hours"
+            else -> "Hello"
         }
 
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "$timeGreetingEng boss! Joe here. Unga phone complete control la irukku. Enna command execute pannanum?"
-                    PersonaType.EDITH -> "$timeGreetingEng boss. Joe E.D.I.T.H. tactical core ready. Tactical defense and phone controls standing by. Solunga boss!"
+                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "$timeGreetingEng! Alexa inga iruken. Unga phone offline voice control la ready-ah irukku. Enna pannanum solunga!"
+                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "$timeGreetingEng! Alexa Echo Show smart hub ready. Device controls 100% offline-la ready. Solunga!"
                 }
             }
             ResponseLanguage.TAMIL -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "வணக்கம் பாஸ். ஜோ அசிஸ்டன்ட் தயார் நிலையில் உள்ளது. என்ன கட்டளை?"
-                    PersonaType.EDITH -> "ஜோ எடித் தற்காப்பு அமைப்பு தயார். ஆப்லைன் மோடில் உங்கள் குரல் கட்டளைக்காக காத்திருக்கிறேன் பாஸ்."
+                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "வணக்கம்! நான் அலெக்சா. உங்கள் போன் கட்டுப்பாட்டு அமைப்புகள் தயாராக உள்ளன. என்ன உதவி செய்ய வேண்டும்?"
+                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "அலெக்சா எக்கோ ஷோ தயார் நிலையில் உள்ளது. உங்கள் ஆப்லைன் குரல் கட்டளைக்காக காத்திருக்கிறேன்."
                 }
             }
             ResponseLanguage.ENGLISH -> {
                 when (currentPersona) {
-                    PersonaType.JARVIS -> "$timeGreetingEng, sir. JOE online. All tactical systems nominal. How may I assist you today?"
-                    PersonaType.EDITH -> "$timeGreetingEng, boss. JOE E.D.I.T.H. standing by. Tactical defense systems ready for instructions."
+                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "$timeGreetingEng! I'm Alexa. Your offline smart assistant is online. How may I help you today?"
+                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "$timeGreetingEng! Alexa Echo Show smart hub standing by. Ready for offline instructions."
                 }
             }
         }
@@ -91,52 +95,43 @@ class PersonaManager {
     fun getIdentity(lang: ResponseLanguage): String {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
-                when (currentPersona) {
-                    PersonaType.JARVIS -> "Naan unga personal AI assistant Joe, boss! Internet illama unga phone call, message, apps, torch, volume ellathayum voice commands la handle pannuven."
-                    PersonaType.EDITH -> "Naan unga tactical AI assistant Joe, boss! Spider-Man EDITH maadhiri touchless voice commands moolama unga phone-ah instant-ah operate panna ready-ah iruken."
-                }
+                "Naan unga personal AI assistant Alexa! Internet thevai illama unga phone calls, torch, apps, volume, touchless unlock ellathayum handle pannuven."
             }
             ResponseLanguage.TAMIL -> {
-                when (currentPersona) {
-                    PersonaType.JARVIS -> "நான் ஜோ. உங்கள் போனை முழுமையாக ஆப்லைனில் கட்டுப்படுத்தும் உங்கள் தனிப்பட்ட AI உதவியாளர்."
-                    PersonaType.EDITH -> "நான் ஜோ எடித். உங்கள் போனை பாதுகாக்கவும் உங்கள் குரல் கட்டளைகளை ஆப்லைனில் இயக்கவும் உருவாக்கப்பட்ட தற்காப்பு AI பாஸ்."
-                }
+                "நான் அலெக்சா. உங்கள் போனை முழுமையாக இணையம் இல்லாமல் இயக்கும் உங்கள் தனிப்பட்ட AI உதவியாளர்."
             }
             ResponseLanguage.ENGLISH -> {
-                when (currentPersona) {
-                    PersonaType.JARVIS -> "I am JOE, your personal offline artificial intelligence. I manage your phone and execute your voice commands touchlessly without requiring internet."
-                    PersonaType.EDITH -> "I am JOE (E.D.I.T.H. Engine), your personal tactical assistant inspired by Spider-Man. Ready to secure and control your mobile device with your voice."
-                }
+                "I am Alexa, your personal offline AI assistant. I run locally on your device to execute voice commands and control phone hardware without internet."
             }
         }
     }
 
-    // Friendly Human-like Status Check
+    // Friendly Status Check
     fun getHowAreYou(lang: ResponseLanguage): String {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
-                "Full power la mass-ah iruken boss! Hardware temperature cool, battery and memory ellam super stable. Neenga epdi irukinga boss?"
+                "Alexa super active-ah iruken! Local processors cool-ah run aagudhu, zero internet latency. Neenga epdi irukinga?"
             }
             ResponseLanguage.TAMIL -> {
-                "முழு திறனில் சிறப்பாக இயங்குகிறேன் பாஸ்! போன் அமைப்புகள் அனைத்தும் நன்று. நீங்கள் எப்படி இருக்கிறீர்கள்?"
+                "நான் மிகவும் சிறப்பாக இயங்குகிறேன்! அனைத்து ஆப்லைன் அமைப்புகளும் தயார். நீங்கள் எப்படி இருக்கிறீர்கள்?"
             }
             ResponseLanguage.ENGLISH -> {
-                "Operating at peak efficiency, sir! Local processors and battery levels are optimal. How are you doing today?"
+                "I'm operating at peak efficiency and 100% offline! How are you doing today?"
             }
         }
     }
 
-    // Humor / Easter Egg
+    // Alexa Humor
     fun getJoke(lang: ResponseLanguage): String {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
-                "Boss, Tony Stark kitta oru joke keten: Internet illama AI vela seiyuma nu... Adhuku nan sonnen: 'JARVIS iruka bayam yen boss!' haha!"
+                "Oru computer doctor kitta pochu... doc ketaru: 'Enna aachu?'... Computer sonnuchu: 'Enakku virus pidichurukku!' haha!"
             }
             ResponseLanguage.TAMIL -> {
-                "ஒரு முறை டோனி ஸ்டார்க் என்னிடம் கேட்டார், இணையம் இல்லாமல் வேலை செய்ய முடியுமா என்று. நான் சொன்னேன்: 'பாஸ், இது ஜார்விஸ் மார்க் 85!' என்று."
+                "ஒரு கம்ப்யூட்டர் மருத்துவரிடம் சென்றது. மருத்துவர் கேட்டார்: என்ன பிரச்சனை? கம்ப்யூட்டர் சொன்னது: எனக்கு வைரஸ் காய்ச்சல்!"
             }
             ResponseLanguage.ENGLISH -> {
-                "Tony Stark once asked me if I could run without the cloud. I replied: 'Sir, I don't need a cloud when I have the whole arc reactor right here!'"
+                "Why was the cell phone wearing glasses? Because it lost its contacts!"
             }
         }
     }

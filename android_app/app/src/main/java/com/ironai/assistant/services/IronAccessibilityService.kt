@@ -4,15 +4,15 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
 /**
  * Android Accessibility Service for hands-free automation.
- * Grants JARVIS and EDITH the power to touchlessly unlock the screen via swipe gestures,
- * tap buttons, type messages in WhatsApp, take screenshots, and lock the screen.
+ * Grants Alexa the power to touchlessly unlock the screen via swipe gestures,
+ * tap buttons, type messages in WhatsApp, take screenshots, pull quick settings,
+ * open recent apps, show power dialog, and lock the screen without root access or internet.
  */
 class IronAccessibilityService : AccessibilityService() {
 
@@ -24,7 +24,7 @@ class IronAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         instance = this
-        Log.i("IronAccessibility", "Iron Accessibility Service connected and active.")
+        Log.i("AlexaAccessibility", "Alexa Accessibility Service connected and active.")
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -32,7 +32,7 @@ class IronAccessibilityService : AccessibilityService() {
     }
 
     override fun onInterrupt() {
-        Log.w("IronAccessibility", "Iron Accessibility Service interrupted.")
+        Log.w("AlexaAccessibility", "Alexa Accessibility Service interrupted.")
     }
 
     override fun onDestroy() {
@@ -65,13 +65,23 @@ class IronAccessibilityService : AccessibilityService() {
 
         return dispatchGesture(gestureBuilder.build(), object : GestureResultCallback() {
             override fun onCompleted(gestureDescription: GestureDescription?) {
-                Log.d("IronAccessibility", "Touchless swipe-up gesture completed successfully.")
+                Log.d("AlexaAccessibility", "Touchless swipe-up gesture completed successfully.")
             }
             override fun onCancelled(gestureDescription: GestureDescription?) {
-                Log.w("IronAccessibility", "Touchless swipe-up gesture cancelled.")
+                Log.w("AlexaAccessibility", "Touchless swipe-up gesture cancelled.")
             }
         }, null)
     }
+
+    // System Navigation Shortcuts
+    fun goHome(): Boolean = performGlobalAction(GLOBAL_ACTION_HOME)
+    fun goBack(): Boolean = performGlobalAction(GLOBAL_ACTION_BACK)
+    fun openNotifications(): Boolean = performGlobalAction(GLOBAL_ACTION_NOTIFICATIONS)
+    fun openQuickSettings(): Boolean = performGlobalAction(GLOBAL_ACTION_QUICK_SETTINGS)
+    fun openRecents(): Boolean = performGlobalAction(GLOBAL_ACTION_RECENTS)
+    fun openPowerDialog(): Boolean = performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)
+    fun lockScreen(): Boolean = performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
+    fun takeScreenshot(): Boolean = performGlobalAction(GLOBAL_ACTION_TAKE_SCREENSHOT)
 
     /**
      * Finds and clicks a button by its text or content description

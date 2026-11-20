@@ -27,8 +27,8 @@
                 android:id="@+id/tv_brand_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="STARK TACTICAL A.I."
-                android:textColor="@color/jarvis_secondary"
+                android:text="AMAZON ECHO SUITE // EDGE AI"
+                android:textColor="@color/alexa_primary"
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
@@ -36,21 +36,21 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="JARVIS OS"
+                android:text="ALEXA ECHO OS"
                 android:textColor="@color/text_white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Persona Switch Button -->
+        <!-- Persona Switch Button (Echo Core <-> Echo Show) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_persona_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SWITCH: EDITH"
+            android:text="SWITCH: SHOW"
             android:textSize="11sp"
             android:textColor="@color/bg_black"
-            app:backgroundTint="@color/jarvis_primary"
+            app:backgroundTint="@color/alexa_primary"
             app:cornerRadius="20dp" />
 
     </LinearLayout>
@@ -68,7 +68,7 @@
             android:id="@+id/tv_system_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="● SYSTEM: 100% OFFLINE"
+            android:text="● 100% OFFLINE // ZERO DATA"
             android:textColor="@color/status_green"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -79,46 +79,46 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="BILINGUAL: ENG / தமிழ்"
-            android:textColor="@color/jarvis_accent"
-            android:textSize="12sp"
+            android:text="TRILINGUAL: ENG / தமிழ் / TANGLISH"
+            android:textColor="@color/alexa_accent"
+            android:textSize="11sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Central Arc Reactor Core Container -->
+    <!-- Central Echo Light Ring Core Container -->
     <FrameLayout
         android:id="@+id/arc_reactor_container"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/sub_status_bar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <!-- Outer Glowing Ring -->
+        <!-- Outer Glowing Echo Ring -->
         <View
             android:id="@+id/ring_outer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_circle_ring" />
 
-        <!-- Inner Core Reactor Button -->
+        <!-- Inner Echo Speaker Core Button -->
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_arc_core"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
-            app:cardCornerRadius="60dp"
+            app:cardCornerRadius="65dp"
             app:cardElevation="16dp"
-            app:cardBackgroundColor="#031620">
+            app:cardBackgroundColor="#0D1B2D">
 
             <ImageView
                 android:id="@+id/iv_mic_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:layout_gravity="center"
                 android:src="@android:drawable/ic_btn_speak_now"
-                app:tint="@color/jarvis_primary" />
+                app:tint="@color/alexa_primary" />
         </androidx.cardview.widget.CardView>
     </FrameLayout>
 
@@ -127,9 +127,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Say 'Hey Jarvis' / 'எடித்' or Tap Reactor"
+        android:text="Say 'Alexa' / 'அலெக்சா' or Tap Echo Ring"
         android:textColor="@color/text_muted"
-        android:textSize="12sp"
+        android:textSize="13sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/arc_reactor_container"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -140,8 +141,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="VOICE ENGINE: STANDBY"
-        android:textColor="@color/jarvis_primary"
+        android:text="ALEXA STANDBY"
+        android:textColor="@color/alexa_primary"
         android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/tv_wake_hint"
@@ -154,37 +155,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="16dp"
-        android:background="#1608141E"
-        android:padding="12dp"
+        android:layout_marginTop="12dp"
+        android:background="#160D1D30"
+        android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@id/tv_speech_state">
 
         <TextView
             android:id="@+id/tv_user_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You: 'டார்ச் போடு' / 'Turn on flashlight'"
+            android:text="You: 'Alexa, brightness kootu' / 'Alexa, wifi settings open pannu'"
             android:textColor="@color/text_muted"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_ai_output"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="JARVIS: At your service, sir. Offline core online."
+            android:layout_marginTop="4dp"
+            android:text="ALEXA: Hello! Complete device settings & hardware control 100% offline."
             android:textColor="@color/text_white"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Quick Status Cards (Flashlight, Volume, Battery) -->
+    <!-- Quick Telemetry Cards (Torch, Volume, Brightness, Battery) -->
     <LinearLayout
         android:id="@+id/status_cards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/dialogue_container">
 
         <TextView
@@ -192,38 +193,51 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#0A1826"
+            android:background="#0D1A2A"
             android:padding="8dp"
             android:gravity="center"
-            android:text="🔦 TORCH: OFF"
-            android:textColor="@color/jarvis_primary"
-            android:textSize="11sp" />
+            android:text="🔦 TORCH"
+            android:textColor="@color/alexa_primary"
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/card_volume"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:background="#0A1826"
+            android:layout_marginStart="6dp"
+            android:background="#0D1A2A"
             android:padding="8dp"
             android:gravity="center"
-            android:text="🔊 VOL: 70%"
-            android:textColor="@color/jarvis_primary"
-            android:textSize="11sp" />
+            android:text="🔊 65%"
+            android:textColor="@color/alexa_primary"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/card_brightness"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:background="#0D1A2A"
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="🔆 75%"
+            android:textColor="@color/alexa_primary"
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/card_battery"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:background="#0A1826"
+            android:layout_marginStart="6dp"
+            android:background="#0D1A2A"
             android:padding="8dp"
             android:gravity="center"
             android:text="🔋 88%"
-            android:textColor="@color/jarvis_primary"
-            android:textSize="11sp" />
+            android:textColor="@color/alexa_primary"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <!-- Accessibility / Background Service Button -->
@@ -231,8 +245,8 @@
         android:id="@+id/btn_enable_accessibility"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="ENABLE PHONE AUTOMATION (ACCESSIBILITY)"
+        android:layout_marginTop="10dp"
+        android:text="ENABLE FULL DEVICE CONTROL (ACCESSIBILITY)"
         android:textSize="11sp"
         android:textColor="@color/text_white"
         app:backgroundTint="#004466"

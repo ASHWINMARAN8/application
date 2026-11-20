@@ -1,11 +1,9 @@
-const CACHE_NAME = 'aida-offline-v1';
+const CACHE_NAME = 'alexa-offline-v2';
 const ASSETS_TO_CACHE = [
   './index.html',
   './style.css',
   './app.js',
-  './manifest.json',
-  '../assets/jarvis_hud.jpg',
-  '../assets/edith_hud.jpg'
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -33,7 +31,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
+      return cachedResponse || fetch(event.request).catch(() => {
+        return caches.match('./index.html');
+      });
     })
   );
 });

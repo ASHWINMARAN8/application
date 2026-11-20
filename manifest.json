@@ -1,17 +1,9 @@
 {
-  "name": "JOE — Tactical Voice AI Assistant (E.D.I.T.H.)",
-  "short_name": "JOE",
+  "name": "Alexa — Offline Voice AI Assistant (Echo Edition)",
+  "short_name": "Alexa",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0c0406",
-  "theme_color": "#ff2052",
-  "orientation": "portrait",
-  "icons": [
-    {
-      "src": "./assets/edith_hud.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#060b13",
+  "theme_color": "#00cae0",
+  "orientation": "portrait"
 }

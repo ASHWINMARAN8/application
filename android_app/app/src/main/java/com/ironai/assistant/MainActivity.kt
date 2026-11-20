@@ -5,6 +5,7 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -23,8 +24,8 @@ import com.ironai.assistant.engine.PersonaType
 import com.ironai.assistant.services.VoiceListenerService
 
 /**
- * Main Activity featuring the futuristic Arc Reactor HUD.
- * Configured with touchless wake and dismissKeyguard capabilities.
+ * Main Activity featuring the iconic Amazon Echo Glowing Light Ring HUD.
+ * Configured with touchless wake, dismissKeyguard, and full offline hardware/settings controls.
  */
 class MainActivity : AppCompatActivity() {
 
@@ -70,20 +71,21 @@ class MainActivity : AppCompatActivity() {
         deviceController = DeviceController(this)
         ttsManager = IronTtsManager(this, personaManager) { isSpeaking ->
             runOnUiThread {
-                binding.tvSpeechState.text = if (isSpeaking) "AI SPEAKING..." else "VOICE ENGINE: STANDBY"
+                binding.tvSpeechState.text = if (isSpeaking) "ALEXA SPEAKING..." else "ALEXA STANDBY"
                 if (isSpeaking) {
                     binding.btnArcCore.setCardBackgroundColor(
-                        ContextCompat.getColor(this, R.color.jarvis_accent)
+                        ContextCompat.getColor(this, R.color.alexa_primary)
                     )
                 } else {
-                    binding.btnArcCore.setCardBackgroundColor(0xFF031620.toInt())
+                    binding.btnArcCore.setCardBackgroundColor(0xFF0D1B2D.toInt())
                 }
             }
         }
 
         setupUI()
-        startArcRotation()
+        startEchoRingRotation()
         checkAndRequestPermissions()
+        checkWriteSettingsPermission()
         setupVoiceCallback()
         updateDashboardTelemetry()
     }
@@ -115,48 +117,48 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnArcCore.setOnClickListener {
-            binding.tvSpeechState.text = "LISTENING (MIC ACTIVE)..."
+            binding.tvSpeechState.text = "LISTENING FOR \"ALEXA\"..."
             ttsManager.speak(personaManager.getGreeting(personaManager.preferredLanguage), false)
         }
 
         binding.btnEnableAccessibility.setOnClickListener {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             startActivity(intent)
-            Toast.makeText(this, "Enable 'A.I.D.A. Assistant' in Accessibility to allow touchless swipe unlock & phone control", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Enable 'Alexa Assistant' in Accessibility to allow full touchless phone control", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun applyPersonaTheme(persona: PersonaType) {
-        if (persona == PersonaType.EDITH) {
-            binding.tvTitle.text = "E.D.I.T.H."
-            binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.edith_primary))
-            binding.tvBrandSub.text = "STARK TACTICAL DEFENSE // EDITH"
-            binding.tvBrandSub.setTextColor(ContextCompat.getColor(this, R.color.edith_secondary))
-            binding.btnPersonaToggle.text = "SWITCH: JARVIS"
-            binding.btnPersonaToggle.backgroundTintList = ContextCompat.getColorStateList(this, R.color.edith_primary)
-            binding.tvSpeechState.setTextColor(ContextCompat.getColor(this, R.color.edith_primary))
-            binding.ivMicIcon.setColorFilter(ContextCompat.getColor(this, R.color.edith_primary))
+        if (persona == PersonaType.ECHO_SHOW || persona == PersonaType.EDITH) {
+            binding.tvTitle.text = "ALEXA SHOW"
+            binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.show_primary))
+            binding.tvBrandSub.text = "ECHO SHOW HUB // SMART DISPLAY"
+            binding.tvBrandSub.setTextColor(ContextCompat.getColor(this, R.color.show_secondary))
+            binding.btnPersonaToggle.text = "SWITCH: ECHO"
+            binding.btnPersonaToggle.backgroundTintList = ContextCompat.getColorStateList(this, R.color.show_primary)
+            binding.tvSpeechState.setTextColor(ContextCompat.getColor(this, R.color.show_primary))
+            binding.ivMicIcon.setColorFilter(ContextCompat.getColor(this, R.color.show_primary))
             ttsManager.speak(personaManager.getGreeting(personaManager.preferredLanguage), false)
         } else {
-            binding.tvTitle.text = "JARVIS OS"
+            binding.tvTitle.text = "ALEXA ECHO"
             binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_white))
-            binding.tvBrandSub.text = "STARK TACTICAL A.I."
-            binding.tvBrandSub.setTextColor(ContextCompat.getColor(this, R.color.jarvis_secondary))
-            binding.btnPersonaToggle.text = "SWITCH: EDITH"
-            binding.btnPersonaToggle.backgroundTintList = ContextCompat.getColorStateList(this, R.color.jarvis_primary)
-            binding.tvSpeechState.setTextColor(ContextCompat.getColor(this, R.color.jarvis_primary))
-            binding.ivMicIcon.setColorFilter(ContextCompat.getColor(this, R.color.jarvis_primary))
+            binding.tvBrandSub.text = "AMAZON ECHO SUITE // EDGE AI"
+            binding.tvBrandSub.setTextColor(ContextCompat.getColor(this, R.color.alexa_primary))
+            binding.btnPersonaToggle.text = "SWITCH: SHOW"
+            binding.btnPersonaToggle.backgroundTintList = ContextCompat.getColorStateList(this, R.color.alexa_primary)
+            binding.tvSpeechState.setTextColor(ContextCompat.getColor(this, R.color.alexa_primary))
+            binding.ivMicIcon.setColorFilter(ContextCompat.getColor(this, R.color.alexa_primary))
             ttsManager.speak(personaManager.getGreeting(personaManager.preferredLanguage), false)
         }
     }
 
-    private fun startArcRotation() {
+    private fun startEchoRingRotation() {
         val rotate = RotateAnimation(
             0f, 360f,
             Animation.RELATIVE_TO_SELF, 0.5f,
             Animation.RELATIVE_TO_SELF, 0.5f
         ).apply {
-            duration = 20000
+            duration = 16000
             repeatCount = Animation.INFINITE
         }
         binding.ringOuter.startAnimation(rotate)
@@ -170,6 +172,13 @@ class MainActivity : AppCompatActivity() {
             permissionLauncher.launch(missing.toTypedArray())
         } else {
             startBackgroundVoiceService()
+        }
+    }
+
+    private fun checkWriteSettingsPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(this)) {
+            // Optional: can request write settings for direct brightness modification
+            // Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:$packageName"))
         }
     }
 
@@ -192,17 +201,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateDashboardTelemetry() {
+    fun updateDashboardTelemetry() {
         val battery = deviceController.getBatteryLevel()
         val volume = deviceController.getVolumePercentage()
+        val brightness = deviceController.getBrightnessPercentage()
         binding.cardBattery.text = "🔋 $battery%"
-        binding.cardVolume.text = "🔊 VOL: $volume%"
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        instance = null
-        VoiceListenerService.activeMainActivity = null
-        ttsManager.shutdown()
+        binding.cardVolume.text = "🔊 $volume%"
+        binding.cardBrightness.text = "🔆 $brightness%"
     }
 }

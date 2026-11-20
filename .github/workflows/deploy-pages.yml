@@ -1,4 +1,4 @@
-name: Deploy JOE AI Website to GitHub Pages
+name: Deploy Alexa AI Website to GitHub Pages
 
 on:
   push:

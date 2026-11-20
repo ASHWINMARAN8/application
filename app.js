@@ -1,58 +1,145 @@
 /* ==========================================================================
-   JOE // TACTICAL VOICE AI & PHONE ASSISTANT (JS)
-   Inspired by E.D.I.T.H. from Spider-Man: Far From Home
-   Full English + Tamil (தமிழ்) + Tanglish Personal AI Engine
-   Features Touchless Voice Screen Unlock & Low-End Phone Optimization
+   ALEXA // ECHO SMART VOICE AI & PHONE ASSISTANT (100% OFFLINE)
+   Amazon Echo Signature Experience: Cyan/Blue Light Ring & Edge Intelligence
+   Full English + Tamil (தமிழ்) + Tanglish On-Device AI Engine
+   Features Complete Device Hardware, Settings & Accessibility Voice Controls
    ========================================================================== */
 
 // Current Persona Configuration
-let currentPersona = 'joe_edith'; // 'joe_edith' or 'joe_executive'
+let currentPersona = 'alexa_echo'; // 'alexa_echo' or 'alexa_show'
 let isListening = false;
 let isSpeaking = false;
 let recognition = null;
 let animationFrameId = null;
 let cachedVoices = [];
+let audioCtx = null;
 
 // Virtual Phone State
 const phoneState = {
   isLocked: false,
   torch: false,
   volume: 65,
+  brightness: 75,
+  wifi: true,
+  bluetooth: true,
   call: 'IDLE',
   battery: 88,
-  activeApp: 'HomeScreen'
+  activeApp: 'HomeScreen',
+  timerSeconds: 0,
+  musicPlaying: false
 };
 
 // Persona Configurations
 const personas = {
-  joe_edith: {
-    title: 'JOE',
-    subtitle: 'E.D.I.T.H. TACTICAL AI',
-    version: 'OS v5.5 (E.D.I.T.H. Protocol)',
-    greetingEng: 'Hello boss. Joe online. Even Dead, I\'m The Hero tactical protocols active and standing by.',
-    greetingTam: 'வணக்கம் பாஸ். ஜோ தயார் நிலையில் உள்ளது. அனைத்து தற்காப்பு மற்றும் போன் அமைப்புகளும் தயார்.',
-    greetingTan: 'Hello boss! Joe here. EDITH tactical core ready. Unga phone complete control-la irukku. Solunga boss, enna pannanum?',
-    wakePrompt: 'Say "Hey Joe" or tap reactor to speak',
-    pitch: 1.05,
-    rate: 0.94,
-    tag: 'JOE (E.D.I.T.H. TACTICAL)'
-  },
-  joe_executive: {
-    title: 'JOE',
-    subtitle: 'EXECUTIVE SUITE',
-    version: 'OS v5.5 (Arc Reactor Suite)',
-    greetingEng: 'At your service, sir. Joe executive system running at maximum efficiency.',
-    greetingTam: 'வணக்கம் பாஸ். ஜோ உங்கள் சேவையில் உள்ளது. என்ன கட்டளை?',
-    greetingTan: 'Hello boss, Joe here! System full nominal-ah irukku. Enna pannanum solunga boss?',
-    wakePrompt: 'Say "Hey Joe" or tap reactor to speak',
-    pitch: 1.08,
+  alexa_echo: {
+    title: 'ALEXA',
+    subtitle: 'AMAZON ECHO SUITE',
+    version: 'Echo OS v6.0 (100% Offline)',
+    greetingEng: 'Hello! I\'m Alexa. Your offline smart assistant is ready for all phone operations and settings. How can I help you?',
+    greetingTam: 'வணக்கம்! நான் அலெக்சா. உங்கள் போன் மற்றும் அமைப்புகள் அனைத்தும் ஆப்லைனில் தயாராக உள்ளன. என்ன உதவி செய்ய வேண்டும்?',
+    greetingTan: 'Hello! Alexa inga iruken. Unga phone settings and hardware controls 100% offline-la ready. Enna pannanum solunga!',
+    wakePrompt: 'Say "Alexa" or tap Echo Ring to speak',
+    pitch: 1.02,
     rate: 0.95,
-    tag: 'JOE (EXECUTIVE AI)'
+    tag: 'ALEXA (ECHO CORE)'
+  },
+  alexa_show: {
+    title: 'ALEXA',
+    subtitle: 'ECHO SHOW PRO',
+    version: 'Show OS v6.0 (Smart Hub Edition)',
+    greetingEng: 'Echo Show smart hub online. Ready to execute your touchless voice commands for every device setting.',
+    greetingTam: 'அலெக்சா எக்கோ ஷோ தயார் நிலையில் உள்ளது. உங்கள் சாதன அமைப்புகளின் கட்டளைகளை நிறைவேற்ற காத்திருக்கிறேன்.',
+    greetingTan: 'Echo Show hub ready boss! Phone settings, hardware and device controls 100% offline-la ready. Solunga!',
+    wakePrompt: 'Say "Alexa" or tap Echo Ring to speak',
+    pitch: 1.04,
+    rate: 0.96,
+    tag: 'ALEXA (ECHO SHOW)'
   }
 };
 
 // ==========================================================================
-// Voice Engine Preloader (Ensures Crystal Clear E.D.I.T.H. Speech)
+// 100% Offline Alexa Web Audio Chime Generator
+// ==========================================================================
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+// Authentic Alexa 2-tone Wake Sound: 784Hz (G5) -> 1046.5Hz (C6)
+function playAlexaWakeChime() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // Tone 1: 784 Hz
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(784, now);
+    gain1.gain.setValueAtTime(0.001, now);
+    gain1.gain.exponentialRampToValueAtTime(0.28, now + 0.02);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.15);
+
+    // Tone 2: 1046.5 Hz (Higher pleasant tone)
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(1046.5, now + 0.11);
+    gain2.gain.setValueAtTime(0.001, now + 0.11);
+    gain2.gain.exponentialRampToValueAtTime(0.32, now + 0.13);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.11);
+    osc2.stop(now + 0.34);
+  } catch (err) {
+    console.warn('Audio chime warning:', err);
+  }
+}
+
+// Confirmation Soft Tone
+function playAlexaSuccessChime() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1046.5, now);
+    osc.frequency.exponentialRampToValueAtTime(1318.5, now + 0.08); // C6 -> E6
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.24);
+  } catch (err) {
+    console.warn('Success chime warning:', err);
+  }
+}
+
+// ==========================================================================
+// Voice Engine Preloader (Ensures Alexa Natural Speech Cadence)
 // ==========================================================================
 function preloadVoices() {
   if ('speechSynthesis' in window) {
@@ -63,100 +150,98 @@ function preloadVoices() {
   }
 }
 
-// Find clear, natural female E.D.I.T.H.-style voice
-function getEdithVoice(lang) {
+// Find clear, natural female Alexa-style voice
+function getAlexaVoice(lang) {
   if (!cachedVoices || cachedVoices.length === 0) {
-    cachedVoices = window.speechSynthesis.getVoices();
+    if ('speechSynthesis' in window) cachedVoices = window.speechSynthesis.getVoices();
   }
 
   if (lang === 'tamil') {
-    const tamVoice = cachedVoices.find(v => v.lang.includes('ta') || v.name.toLowerCase().includes('tamil'));
-    if (tamVoice) return tamVoice;
+    const tamilVoice = cachedVoices.find(v => v.lang.includes('ta') || v.lang.includes('ta-IN'));
+    if (tamilVoice) return tamilVoice;
   }
 
-  // Priority search for ultra-clear natural female voices (E.D.I.T.H. style)
-  const preferredNames = [
-    'sonia', 'libby', 'aria', 'jenny', 'mia', 'zira', // Microsoft Natural voices
-    'google uk english female', 'google us english', 'google english',
-    'samantha', 'karen', 'victoria', 'moira', // Apple high-quality voices
-    'swara', 'neerja', 'heera', 'veena', // Clear Indian English voices
-    'natural', 'female'
-  ];
-
-  // For Tanglish, try crisp Indian or UK English first
+  // Indian English gives natural Tanglish inflection
   if (lang === 'tanglish') {
-    for (const name of ['swara', 'neerja', 'heera', 'veena', 'india', 'en-in']) {
-      const match = cachedVoices.find(v => v.name.toLowerCase().includes(name) || v.lang.toLowerCase().includes(name));
-      if (match) return match;
-    }
+    const indianVoice = cachedVoices.find(v => (v.lang === 'en-IN' || v.lang.includes('IN')) && (v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Google') || v.name.includes('Heera')));
+    if (indianVoice) return indianVoice;
   }
 
-  // Find standard E.D.I.T.H. female voice
+  // Authentic English Alexa fallback
+  const preferredNames = ['Google UK English Female', 'Microsoft Zira', 'Samantha', 'Karen', 'Victoria', 'Moira'];
   for (const name of preferredNames) {
-    const match = cachedVoices.find(v => v.name.toLowerCase().includes(name));
+    const match = cachedVoices.find(v => v.name.includes(name));
     if (match) return match;
   }
 
-  // Fallback to any en-GB or en-US female voice
-  const englishFemale = cachedVoices.find(v => (v.lang.startsWith('en') || v.lang.startsWith('en-GB')) && !v.name.toLowerCase().includes('male'));
-  if (englishFemale) return englishFemale;
-
-  return cachedVoices[0] || null;
+  return cachedVoices.find(v => v.lang.startsWith('en')) || null;
 }
 
 // ==========================================================================
-// Initialization
+// App Initialization
 // ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
   preloadVoices();
-  initClock();
   initCanvasVisualizer();
+  initClock();
   initSpeechRecognition();
-  logTicker('JOE (E.D.I.T.H. Protocol) initialized. Touchless Screen Unlock & Low-End Core ready.');
+  updatePhoneUI();
+
+  // Register service worker for 100% offline usage
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => logTicker('Alexa Offline Service Worker active & cached.'))
+      .catch(err => console.log('SW registration error:', err));
+  }
 });
 
 function initClock() {
   const clockEl = document.getElementById('phone-clock');
+  const lockClockEl = document.getElementById('lock-time');
   function updateTime() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
     const mins = String(now.getMinutes()).padStart(2, '0');
-    if (clockEl) clockEl.innerText = `${hours}:${mins}`;
+    const timeStr = `${hours}:${mins}`;
+    if (clockEl) clockEl.innerText = timeStr;
+    if (lockClockEl) lockClockEl.innerText = timeStr;
   }
   updateTime();
   setInterval(updateTime, 1000);
 }
 
 // ==========================================================================
-// Persona Switching (E.D.I.T.H. Tactical <-> Executive)
+// Persona Switching (Alexa Echo <-> Alexa Show)
 // ==========================================================================
 function switchPersona(personaName) {
   currentPersona = personaName;
   const body = document.body;
-  const btnEdith = document.getElementById('btn-joe-edith');
-  const btnExec = document.getElementById('btn-joe-exec');
+  const btnEcho = document.getElementById('btn-alexa-echo');
+  const btnShow = document.getElementById('btn-alexa-show');
   const titleEl = document.getElementById('persona-title');
   const aiTag = document.getElementById('ai-tag');
   const wakePrompt = document.getElementById('wake-prompt');
 
-  if (personaName === 'joe_edith') {
-    body.className = 'theme-joe-edith';
-    if (btnExec) btnExec.classList.remove('active');
-    if (btnEdith) btnEdith.classList.add('active');
-    if (titleEl) titleEl.innerHTML = `JOE <span>${personas.joe_edith.version}</span>`;
-    if (aiTag) aiTag.innerText = personas.joe_edith.tag;
-    if (wakePrompt) wakePrompt.innerText = personas.joe_edith.wakePrompt;
-    speakResponse(personas.joe_edith.greetingTan, 'tanglish');
-    logTicker('Switched to JOE (E.D.I.T.H. Tactical Suite).');
+  playAlexaSuccessChime();
+
+  if (personaName === 'alexa_echo') {
+    body.className = 'theme-alexa-echo';
+    if (btnShow) btnShow.classList.remove('active');
+    if (btnEcho) btnEcho.classList.add('active');
+    if (titleEl) titleEl.innerHTML = `ALEXA <span>${personas.alexa_echo.version}</span>`;
+    if (aiTag) aiTag.innerText = personas.alexa_echo.tag;
+    if (wakePrompt) wakePrompt.innerText = personas.alexa_echo.wakePrompt;
+    speakResponse(personas.alexa_echo.greetingTan, 'tanglish');
+    logTicker('Switched to Alexa Echo Core.');
   } else {
-    body.className = 'theme-joe-exec';
-    if (btnEdith) btnEdith.classList.remove('active');
-    if (btnExec) btnExec.classList.add('active');
-    if (titleEl) titleEl.innerHTML = `JOE <span>${personas.joe_executive.version}</span>`;
-    if (aiTag) aiTag.innerText = personas.joe_executive.tag;
-    if (wakePrompt) wakePrompt.innerText = personas.joe_executive.wakePrompt;
-    speakResponse(personas.joe_executive.greetingTan, 'tanglish');
-    logTicker('Switched to JOE Executive Arc Suite.');
+    body.className = 'theme-alexa-show';
+    if (btnEcho) btnEcho.classList.remove('active');
+    if (btnShow) btnShow.classList.add('active');
+    if (titleEl) titleEl.innerHTML = `ALEXA <span>${personas.alexa_show.version}</span>`;
+    if (aiTag) aiTag.innerText = personas.alexa_show.tag;
+    if (wakePrompt) wakePrompt.innerText = personas.alexa_show.wakePrompt;
+    speakResponse(personas.alexa_show.greetingTan, 'tanglish');
+    logTicker('Switched to Alexa Echo Show Hub.');
   }
 }
 
@@ -171,7 +256,7 @@ function detectLanguage(input) {
   const tanglishMarkers = [
     'podu', 'pannu', 'kootu', 'kurai', 'korai', 'anupu', 'sollu', 'solunga',
     'iruka', 'irukinga', 'irukku', 'evalo', 'evvalavu', 'enna', 'yaaru', 'ne',
-    'inga', 'anga', 'amma ku', 'appa ku', 'ku call', 'ah', 'romba', 'nalla', 'mass', 'unlock'
+    'inga', 'anga', 'amma ku', 'appa ku', 'ku call', 'ah', 'romba', 'nalla', 'unlock', 'vai'
   ];
   if (tanglishMarkers.some(word => lower.includes(word))) {
     return 'tanglish';
@@ -180,17 +265,32 @@ function detectLanguage(input) {
 }
 
 // ==========================================================================
-// Intent Router (NLU)
+// Complete Offline Natural Language Intent Router
 // ==========================================================================
 function processCommand(rawInput) {
   const input = rawInput.trim();
-  const lower = input.toLowerCase();
+  // Strip wake words if present (Alexa, Hey Alexa, Echo, Amazon)
+  const cleaned = input
+    .replace(/^(alexa|hey alexa|echo|amazon|அலெக்சா|ஹேய் அலெக்சா)\s*[,:]?\s*/i, '')
+    .trim();
+
+  const lower = cleaned.toLowerCase();
   const userTranscriptEl = document.getElementById('user-transcript');
   if (userTranscriptEl) userTranscriptEl.innerText = `"${input}"`;
 
-  logTicker(`Processing voice input: "${input}"`);
+  logTicker(`Processing voice command: "${input}"`);
 
-  const lang = detectLanguage(input);
+  const lang = detectLanguage(cleaned.length > 0 ? cleaned : input);
+
+  // If user only says "Alexa" or greeting
+  if (lower === '' || lower === 'alexa' || lower === 'hello' || lower === 'hi' || lower === 'hey' || lower === 'vanakkam') {
+    playAlexaWakeChime();
+    const reply = lang === 'tanglish'
+      ? 'Solunga boss, Alexa inga iruken! Enna help venum?'
+      : (lang === 'tamil' ? 'வணக்கம், நான் அலெக்சா. உங்களுக்கு என்ன உதவி தேவை?' : 'Hello! I\'m listening. How can I help with your device?');
+    speakResponse(reply, lang);
+    return;
+  }
 
   // 1. TOUCHLESS PHONE UNLOCK
   if (
@@ -202,9 +302,9 @@ function processCommand(rawInput) {
     phoneState.isLocked = false;
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? 'Phone-ah touchless-ah unlock pannitten, boss!'
-      : (lang === 'tamil' ? 'போன் திரை திறக்கப்பட்டது பாஸ்.' : 'Device unlocked touchlessly, sir.');
-    triggerPhoneAction('Touchless Unlock', 'Automated Swipe Gesture Dispatched', '🔓');
+      ? 'Phone-ah touchless-ah unlock pannitten!'
+      : (lang === 'tamil' ? 'போன் திரை திறக்கப்பட்டது.' : 'Sure, unlocking your phone touchlessly.');
+    triggerPhoneAction('Touchless Unlock', 'Automated Screen Unlock Dispatched', '🔓');
     speakResponse(reply, lang);
     return;
   }
@@ -217,8 +317,8 @@ function processCommand(rawInput) {
     phoneState.isLocked = true;
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? "Phone display-ah lock pannitten, boss. 'Phone unlock pannu' nu sonna wake aaguven."
-      : (lang === 'tamil' ? 'போன் திரை லாக் செய்யப்பட்டது பாஸ்.' : 'Device display locked, sir. Say "unlock phone" to wake.');
+      ? "Phone display-ah lock pannitten. 'Alexa' nu sonna wake aaguven."
+      : (lang === 'tamil' ? 'போன் திரை லாக் செய்யப்பட்டது.' : 'Device display locked. Say "Alexa" anytime to wake.');
     triggerPhoneAction('Security Lock', 'Accessibility: Screen Locked', '🔒');
     speakResponse(reply, lang);
     return;
@@ -233,9 +333,9 @@ function processCommand(rawInput) {
     phoneState.torch = true;
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? 'Torch on pannitten, boss!'
-      : (lang === 'tamil' ? 'டார்ச் ஆன் செய்யப்பட்டது பாஸ்.' : 'Flashlight illuminated, sir.');
-    triggerPhoneAction('Flashlight Control', 'Camera Torch ON', '🔦');
+      ? 'Sure! Torch on pannitten.'
+      : (lang === 'tamil' ? 'டார்ச் ஆன் செய்யப்பட்டது.' : 'Sure, turning on the flashlight.');
+    triggerPhoneAction('Flashlight', 'Camera Torch ON', '🔦');
     speakResponse(reply, lang);
     return;
   }
@@ -248,18 +348,116 @@ function processCommand(rawInput) {
     phoneState.torch = false;
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? 'Torch off pannitten, boss.'
-      : (lang === 'tamil' ? 'டார்ச் ஆப் செய்யப்பட்டது.' : 'Flashlight deactivated, sir.');
-    triggerPhoneAction('Flashlight Control', 'Camera Torch OFF', '🔦');
+      ? 'Flashlight off pannitten.'
+      : (lang === 'tamil' ? 'டார்ச் ஆப் செய்யப்பட்டது.' : 'Flashlight is turned off.');
+    triggerPhoneAction('Flashlight', 'Camera Torch OFF', '🔦');
     speakResponse(reply, lang);
     return;
   }
 
-  // 4. PHONE CALLS
+  // 4. SCREEN BRIGHTNESS CONTROLS
+  if (lower.includes('brightness max') || lower.includes('full brightness') || lower.includes('முழு வெளிச்சம்')) {
+    phoneState.brightness = 100;
+    updatePhoneUI();
+    const reply = lang === 'tanglish'
+      ? 'Brightness full max 100 percent-kku potuten!'
+      : (lang === 'tamil' ? 'முழு வெளிச்சம் அமைக்கப்பட்டது.' : 'Screen brightness set to maximum 100 percent.');
+    triggerPhoneAction('Brightness Max', 'Display: 100%', '🔆');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('brightness kootu') || lower.includes('increase brightness') || lower.includes('வெளிச்சம் கூட்டு') || lower.includes('brightness up')) {
+    phoneState.brightness = Math.min(100, phoneState.brightness + 25);
+    updatePhoneUI();
+    const reply = lang === 'tanglish'
+      ? `Brightness ${phoneState.brightness} percent-kku kootitten.`
+      : (lang === 'tamil' ? `வெளிச்சம் ${phoneState.brightness} சதவீதமாக அதிகரிக்கப்பட்டது.` : `Brightness increased to ${phoneState.brightness} percent.`);
+    triggerPhoneAction('Brightness Up', `Display: ${phoneState.brightness}%`, '🔆');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('brightness kurai') || lower.includes('brightness korai') || lower.includes('decrease brightness') || lower.includes('reduce brightness') || lower.includes('வெளிச்சம் குறை') || lower.includes('brightness down')) {
+    phoneState.brightness = Math.max(10, phoneState.brightness - 25);
+    updatePhoneUI();
+    const reply = lang === 'tanglish'
+      ? `Brightness ${phoneState.brightness} percent-kku korachutten.`
+      : (lang === 'tamil' ? `வெளிச்சம் ${phoneState.brightness} சதவீதமாக குறைக்கப்பட்டது.` : `Brightness decreased to ${phoneState.brightness} percent.`);
+    triggerPhoneAction('Brightness Down', `Display: ${phoneState.brightness}%`, '🔅');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('brightness') || lower.includes('வெளிச்சம்')) {
+    const match = lower.match(/(\d+)/);
+    const target = match ? parseInt(match[1]) : 75;
+    phoneState.brightness = Math.min(100, Math.max(0, target));
+    updatePhoneUI();
+    const reply = lang === 'tanglish'
+      ? `Brightness ${phoneState.brightness} percent-kku set pannitten.`
+      : (lang === 'tamil' ? `வெளிச்சம் ${phoneState.brightness} சதவீதத்தில் அமைக்கப்பட்டது.` : `Brightness set to ${phoneState.brightness} percent.`);
+    triggerPhoneAction('Brightness', `Display: ${phoneState.brightness}%`, '🔆');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 5. CAMERA & PHOTOS
+  if (lower.includes('take photo') || lower.includes('photo edu') || lower.includes('போட்டோ எடு') || lower.includes('take a picture') || lower.includes('click photo')) {
+    phoneState.activeApp = 'Camera Shutter';
+    const reply = lang === 'tanglish'
+      ? 'Camera open panni photo capture mode potuten!'
+      : (lang === 'tamil' ? 'கேமரா திறக்கப்பட்டது, படம் எடுக்கலாம்.' : 'Opening camera in photo capture mode.');
+    triggerPhoneAction('Camera Capture', 'Taking Photo...', '📸');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('record video') || lower.includes('video edu') || lower.includes('வீடியோ எடு')) {
+    phoneState.activeApp = 'Video Recorder';
+    const reply = lang === 'tanglish'
+      ? 'Video recording mode open panren!'
+      : (lang === 'tamil' ? 'வீடியோ பதிவு முறை திறக்கப்படுகிறது.' : 'Starting video recording mode.');
+    triggerPhoneAction('Video Camera', 'Recording Ready', '🎥');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 6. MEDIA PLAYBACK
+  if (lower.includes('play music') || lower.includes('song play') || lower.includes('பாட்டு போடு') || lower.includes('resume music')) {
+    phoneState.musicPlaying = true;
+    const reply = lang === 'tanglish'
+      ? 'Music playback start panren.'
+      : (lang === 'tamil' ? 'பாடல் இயக்கப்படுகிறது.' : 'Playing media.');
+    triggerPhoneAction('Media Player', 'Playing Track...', '🎵');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('pause music') || lower.includes('stop music') || lower.includes('பாட்டை நிறுத்து') || lower.includes('song pause')) {
+    phoneState.musicPlaying = false;
+    const reply = lang === 'tanglish'
+      ? 'Music pause pannitten.'
+      : (lang === 'tamil' ? 'பாடல் நிறுத்தப்பட்டது.' : 'Media paused.');
+    triggerPhoneAction('Media Player', 'Paused', '⏸️');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('next song') || lower.includes('next track') || lower.includes('அடுத்த பாடல்')) {
+    const reply = lang === 'tanglish'
+      ? 'Next song-ku skip panren.'
+      : (lang === 'tamil' ? 'அடுத்த பாடலுக்கு செல்லப்பட்டது.' : 'Skipping to next track.');
+    triggerPhoneAction('Media Player', 'Next Track >>', '⏭️');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 7. PHONE CALLS
   if (lower.includes('call pannu') || lower.includes('கால் பண்ணு') || lower.includes('call') || lower.includes('dial') || lower.includes('phone pannu')) {
     let contact = 'Contact';
     if (lang === 'tamil') {
-      const matchTam = input.match(/(.*?)(?:-க்கு|க்கு|\s+)கால்\s*பண்ணு/);
+      const matchTam = cleaned.match(/(.*?)(?:-க்கு|க்கு|\s+)கால்\s*பண்ணு/);
       if (matchTam && matchTam[1]) contact = matchTam[1].replace(/^(நீ|தயவுசெய்து)\s*/, '').trim();
     } else if (lang === 'tanglish') {
       const matchTan1 = lower.match(/(?:call\s+pannu|phone\s+pannu)\s+([a-zA-Z0-9]+)/);
@@ -274,20 +472,20 @@ function processCommand(rawInput) {
     phoneState.call = `Calling ${contact}`;
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? `${contact}-kku ippo call panren, boss.`
-      : (lang === 'tamil' ? `${contact}-க்கு இப்போது கால் செய்கிறேன்.` : `Initiating call to ${contact} right now, sir.`);
-    triggerPhoneAction(`Call: ${contact}`, 'Dialing via Telecom Manager...', '📞');
+      ? `${contact}-kku ippo call panren.`
+      : (lang === 'tamil' ? `${contact}-க்கு இப்போது கால் செய்கிறேன்.` : `Calling ${contact} now.`);
+    triggerPhoneAction(`Call: ${contact}`, 'Dialing via Telecom Service...', '📞');
     speakResponse(reply, lang);
     return;
   }
 
-  // 5. WHATSAPP & SMS MESSAGING
+  // 8. WHATSAPP & SMS MESSAGING
   if (lower.includes('message') || lower.includes('மெசேஜ்') || lower.includes('whatsapp') || lower.includes('வாட்ஸ்அப்') || lower.includes('anupu')) {
     let recipient = 'Contact';
     let msg = 'Hello!';
 
-    if (input.includes(':')) {
-      const parts = input.split(':');
+    if (cleaned.includes(':')) {
+      const parts = cleaned.split(':');
       msg = parts[1].trim();
       const leftPart = parts[0];
       const match = leftPart.match(/(?:to|anupu|அனுப்பு|க்கு|ku)\s*([a-zA-Z\u0B80-\u0BFF\s]+)/i);
@@ -298,21 +496,144 @@ function processCommand(rawInput) {
     }
 
     const reply = lang === 'tanglish'
-      ? `${recipient}-kku WhatsApp message anupitten, boss: "${msg}"`
-      : (lang === 'tamil' ? `${recipient}-க்கு மெசேஜ் அனுப்பப்பட்டது.` : `Message sent to ${recipient}, sir.`);
+      ? `${recipient}-kku message anupitten: "${msg}"`
+      : (lang === 'tamil' ? `${recipient}-க்கு மெசேஜ் அனுப்பப்பட்டது.` : `Message sent to ${recipient}: "${msg}"`);
     triggerPhoneAction(`Message to ${recipient}`, `"${msg}"`, '💬');
     speakResponse(reply, lang);
     return;
   }
 
-  // 6. APP LAUNCHING
+  // 9. SETTINGS SHORTCUTS & PANELS
+  if (lower.includes('wifi') || lower.includes('வைபை')) {
+    const reply = lang === 'tanglish'
+      ? 'Wi-Fi settings open panren.'
+      : (lang === 'tamil' ? 'வைஃபை அமைப்புகள் திறக்கப்படுகிறது.' : 'Opening Wi-Fi settings.');
+    triggerPhoneAction('Settings', 'Wi-Fi Control Panel', '📶');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('bluetooth') || lower.includes('புளூடூத்')) {
+    const reply = lang === 'tanglish'
+      ? 'Bluetooth settings open panren.'
+      : (lang === 'tamil' ? 'புளூடூத் அமைப்புகள் திறக்கப்படுகிறது.' : 'Opening Bluetooth settings.');
+    triggerPhoneAction('Settings', 'Bluetooth Panel', 'ᛒ');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('hotspot') || lower.includes('ஹாட்ஸ்பாட்')) {
+    const reply = lang === 'tanglish'
+      ? 'Hotspot & Tethering settings open panren.'
+      : (lang === 'tamil' ? 'ஹாட்ஸ்பாட் அமைப்புகள் திறக்கப்படுகிறது.' : 'Opening Hotspot and Tethering settings.');
+    triggerPhoneAction('Settings', 'Tethering & Hotspot', '📡');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('display settings') || lower.includes('screen settings') || lower.includes('திரை அமைப்புகள்')) {
+    const reply = lang === 'tanglish'
+      ? 'Display settings open panren.'
+      : (lang === 'tamil' ? 'திரை அமைப்புகள் திறக்கப்படுகிறது.' : 'Opening Display settings.');
+    triggerPhoneAction('Settings', 'Display & Brightness', '📱');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('sound settings') || lower.includes('ஒலி அமைப்புகள்')) {
+    const reply = lang === 'tanglish'
+      ? 'Sound and vibration settings open panren.'
+      : (lang === 'tamil' ? 'ஒலி அமைப்புகள் திறக்கப்படுகிறது.' : 'Opening Sound and Vibration settings.');
+    triggerPhoneAction('Settings', 'Sound & Haptics', '🔔');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('location') || lower.includes('gps') || lower.includes('இருப்பிடம்')) {
+    const reply = lang === 'tanglish'
+      ? 'GPS Location settings open panren.'
+      : (lang === 'tamil' ? 'இருப்பிட அமைப்புகள் திறக்கப்படுகிறது.' : 'Opening GPS Location settings.');
+    triggerPhoneAction('Settings', 'Location & GPS', '📍');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('airplane mode') || lower.includes('flight mode') || lower.includes('விமான நிலை')) {
+    const reply = lang === 'tanglish'
+      ? 'Airplane mode settings open panren.'
+      : (lang === 'tamil' ? 'விமான நிலை அமைப்புகள் திறக்கப்படுகிறது.' : 'Opening Airplane mode settings.');
+    triggerPhoneAction('Settings', 'Airplane Mode', '✈️');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 10. SYSTEM NAVIGATION & ACCESSIBILITY SHORTCUTS
+  if (lower.includes('screenshot') || lower.includes('ஸ்கிரீன்ஷாட்') || lower.includes('படம் எடு')) {
+    const reply = lang === 'tanglish'
+      ? 'Screenshot eduthuten!'
+      : (lang === 'tamil' ? 'திரைப்படம் எடுக்கப்பட்டது.' : 'Screenshot captured successfully.');
+    triggerPhoneAction('Accessibility', 'Screenshot Captured', '📸');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('quick settings') || lower.includes('control center') || lower.includes('குயிக் செட்டிங்ஸ்')) {
+    const reply = lang === 'tanglish'
+      ? 'Quick settings control panel pull panren.'
+      : (lang === 'tamil' ? 'விரைவு அமைப்புகள் குழு திறக்கப்படுகிறது.' : 'Pulling down Quick Settings.');
+    triggerPhoneAction('Accessibility', 'Quick Settings Shade', '🎛️');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('notification') || lower.includes('நோட்டிபிகேஷன்')) {
+    const reply = lang === 'tanglish'
+      ? 'Notifications open panren.'
+      : (lang === 'tamil' ? 'அறிவிப்புகள் திறக்கப்படுகிறது.' : 'Opening notifications panel.');
+    triggerPhoneAction('Accessibility', 'Notifications Shade', '🔔');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('recent') || lower.includes('app switcher') || lower.includes('recents')) {
+    const reply = lang === 'tanglish'
+      ? 'Recent apps switcher open panren.'
+      : (lang === 'tamil' ? 'சமீபத்திய செயலிகள் திறக்கப்படுகிறது.' : 'Opening recent apps switcher.');
+    triggerPhoneAction('Accessibility', 'Recent Applications', '🔲');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('home') || lower.includes('முகப்பு')) {
+    phoneState.activeApp = 'HomeScreen';
+    const reply = lang === 'tanglish'
+      ? 'Home screen-ku vandhutom.'
+      : (lang === 'tamil' ? 'முகப்பு திரைக்கு செல்லப்பட்டது.' : 'Navigated to Home Screen.');
+    triggerPhoneAction('Navigation', 'Home Screen', '🏠');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('back') || lower.includes('பின்னாடி')) {
+    const reply = lang === 'tanglish'
+      ? 'Back poitten.'
+      : (lang === 'tamil' ? 'பின்செல்லப்பட்டது.' : 'Navigated back.');
+    triggerPhoneAction('Navigation', 'Go Back', '⬅️');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 11. APP LAUNCHING
   if (lower.includes('open') || lower.includes('ஓபன்') || lower.includes('launch') || lower.includes('start') || lower.includes('thira') || lower.includes('open pannu')) {
     let app = 'App';
     if (lower.includes('youtube') || lower.includes('யூடியூப்')) app = 'YouTube';
     else if (lower.includes('camera') || lower.includes('கேமரா')) app = 'Camera';
     else if (lower.includes('whatsapp') || lower.includes('வாட்ஸ்அப்')) app = 'WhatsApp';
     else if (lower.includes('instagram') || lower.includes('insta')) app = 'Instagram';
+    else if (lower.includes('spotify') || lower.includes('music') || lower.includes('ஸ்பாடிஃபை')) app = 'Spotify';
     else if (lower.includes('settings') || lower.includes('செட்டிங்ஸ்')) app = 'Settings';
+    else if (lower.includes('maps') || lower.includes('மேப்ஸ்')) app = 'Maps';
+    else if (lower.includes('calculator') || lower.includes('கால்குலேட்டர்')) app = 'Calculator';
     else {
       const match = lower.match(/(?:open|launch|start|open pannu)\s+([a-zA-Z]+)/);
       if (match && match[1]) app = match[1];
@@ -320,21 +641,21 @@ function processCommand(rawInput) {
 
     phoneState.activeApp = app;
     const reply = lang === 'tanglish'
-      ? `${app} open panren, boss.`
-      : (lang === 'tamil' ? `${app} அப்ளிகேஷன் திறக்கப்படுகிறது.` : `Launching ${app} on your device now, sir.`);
-    triggerPhoneAction(`App Launched: ${app}`, 'Intent Package Dispatched', '🚀');
+      ? `${app} open panren.`
+      : (lang === 'tamil' ? `${app} அப்ளிகேஷன் திறக்கப்படுகிறது.` : `Opening ${app} on your device.`);
+    triggerPhoneAction(`Launch: ${app}`, 'Application Dispatched', '🚀');
     speakResponse(reply, lang);
     return;
   }
 
-  // 7. VOLUME CONTROLS
+  // 12. VOLUME CONTROLS
   if (lower.includes('kootu') || lower.includes('சத்தத்தை கூட்டு') || lower.includes('volume up') || lower.includes('increase volume')) {
     phoneState.volume = Math.min(100, phoneState.volume + 15);
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? `Sound ${phoneState.volume} percent-kku kootitten, boss.`
-      : (lang === 'tamil' ? `சத்தம் அதிகரிக்கப்பட்டது. இப்போது ${phoneState.volume} சதவீதம்.` : `Audio level increased to ${phoneState.volume} percent, sir.`);
-    triggerPhoneAction('Volume Control', `Stream set to ${phoneState.volume}%`, '🔊');
+      ? `Sound ${phoneState.volume} percent-kku kootitten.`
+      : (lang === 'tamil' ? `சத்தம் அதிகரிக்கப்பட்டது: ${phoneState.volume} சதவீதம்.` : `Audio volume set to ${phoneState.volume} percent.`);
+    triggerPhoneAction('Volume Up', `Audio set to ${phoneState.volume}%`, '🔊');
     speakResponse(reply, lang);
     return;
   }
@@ -343,83 +664,153 @@ function processCommand(rawInput) {
     phoneState.volume = Math.max(0, phoneState.volume - 15);
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? `Sound ${phoneState.volume} percent-kku korachutten, boss.`
-      : (lang === 'tamil' ? `சத்தம் குறைக்கப்பட்டது: ${phoneState.volume} சதவீதம்.` : `Audio level reduced to ${phoneState.volume} percent, sir.`);
-    triggerPhoneAction('Volume Control', `Stream set to ${phoneState.volume}%`, '🔉');
+      ? `Sound ${phoneState.volume} percent-kku korachutten.`
+      : (lang === 'tamil' ? `சத்தம் குறைக்கப்பட்டது: ${phoneState.volume} சதவீதம்.` : `Audio volume reduced to ${phoneState.volume} percent.`);
+    triggerPhoneAction('Volume Down', `Audio set to ${phoneState.volume}%`, '🔉');
     speakResponse(reply, lang);
     return;
   }
 
-  // 8. BATTERY & STATUS & TIME
+  if (lower.includes('mute') || lower.includes('silent') || lower.includes('சைலன்ட்')) {
+    phoneState.volume = 0;
+    updatePhoneUI();
+    const reply = lang === 'tanglish'
+      ? 'Phone silent mode-la potuten.'
+      : (lang === 'tamil' ? 'போன் சைலன்ட் மோடில் வைக்கப்பட்டது.' : 'Device muted.');
+    triggerPhoneAction('Silent Mode', 'Volume Muted', '🔇');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 13. BATTERY & STORAGE & TIME & DATE
+  if (lower.includes('storage') || lower.includes('memory') || lower.includes('மெமரி')) {
+    const reply = lang === 'tanglish'
+      ? 'Phone storage-la 42 GB free space irukku.'
+      : (lang === 'tamil' ? 'உள் நினைவகத்தில் 42 GB இடம் காலியாக உள்ளது.' : 'You have 42 GB of free internal storage remaining.');
+    triggerPhoneAction('Storage Check', '42 GB Available', '💾');
+    speakResponse(reply, lang);
+    return;
+  }
+
   if (lower.includes('battery') || lower.includes('பேட்டரி') || lower.includes('charge') || lower.includes('evalo') || lower.includes('evvalavu')) {
     const reply = lang === 'tanglish'
-      ? `Battery ippo ${phoneState.battery} percent irukku, boss. Power super stable!`
-      : (lang === 'tamil' ? `போன் பேட்டரி அளவு ${phoneState.battery} சதவீதம் உள்ளது பாஸ்.` : `Battery is standing at ${phoneState.battery} percent, sir.`);
-    triggerPhoneAction('System Telemetry', `Battery: ${phoneState.battery}%`, '🔋');
+      ? `Battery ippo ${phoneState.battery} percent irukku.`
+      : (lang === 'tamil' ? `பேட்டரி அளவு ${phoneState.battery} சதவீதம் உள்ளது.` : `Your phone battery is at ${phoneState.battery} percent.`);
+    triggerPhoneAction('Battery Level', `${phoneState.battery}% remaining`, '🔋');
     speakResponse(reply, lang);
     return;
   }
 
-  // 9. PERSONAL AI BANTER: "How are you?" / "epdi iruka?"
+  if (lower.includes('time') || lower.includes('நேரம்') || lower.includes('மணி')) {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const reply = lang === 'tanglish'
+      ? `Ippo time ${timeStr}.`
+      : (lang === 'tamil' ? `இப்போது நேரம் ${timeStr}.` : `The time is currently ${timeStr}.`);
+    triggerPhoneAction('Time Check', timeStr, '⏱️');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('date') || lower.includes('தேதி') || lower.includes('inaikku')) {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const reply = lang === 'tanglish'
+      ? `Inaikku date ${dateStr}.`
+      : (lang === 'tamil' ? `இன்றைய தேதி ${dateStr}.` : `Today is ${dateStr}.`);
+    triggerPhoneAction('Date Check', dateStr, '📅');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 14. TIMER & ALARM
+  if (lower.includes('timer') || lower.includes('டைமர்')) {
+    const match = lower.match(/(\d+)/);
+    const mins = match ? match[1] : '5';
+    const reply = lang === 'tanglish'
+      ? `${mins} minutes timer start pannitten!`
+      : (lang === 'tamil' ? `${mins} நிமிடங்களுக்கான டைமர் தொடங்கப்பட்டது.` : `${mins} minute timer set, starting now.`);
+    triggerPhoneAction('Timer Active', `${mins} Minutes Countdown`, '⏱️');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  if (lower.includes('alarm') || lower.includes('அலாரம்')) {
+    const match = lower.match(/(\d+)/);
+    const hour = match ? match[1] : '7';
+    const reply = lang === 'tanglish'
+      ? `Kaalai ${hour} manikku alarm set pannitten!`
+      : (lang === 'tamil' ? `காலை ${hour} மணிக்கு அலாரம் அமைக்கப்பட்டது.` : `Alarm set for ${hour}:00 AM.`);
+    triggerPhoneAction('Alarm Set', `${hour}:00 AM`, '⏰');
+    speakResponse(reply, lang);
+    return;
+  }
+
+  // 15. ALEXA BANTER: "How are you?" / "epdi iruka?"
   if (lower.includes('epdi iruka') || lower.includes('how are you') || lower.includes('எப்படி இருக்க')) {
     const reply = lang === 'tanglish'
-      ? 'Joe full energy-la super-ah iruken, boss! Low-end device-layum lag illama smooth-ah run aaguren. Neenga epdi irukinga boss?'
-      : (lang === 'tamil' ? 'முழு திறனில் சிறப்பாக இயங்குகிறேன் பாஸ்! நீங்கள் எப்படி இருக்கிறீர்கள்?' : 'Operating at peak efficiency, sir! EDITH tactical interface ready. How may I assist you today?');
+      ? 'Alexa full active-ah super-ah iruken! Device completely offline-la smooth-ah run aagudhu. Neenga epdi irukinga?'
+      : (lang === 'tamil' ? 'நான் மிகவும் சிறப்பாக இருக்கிறேன்! நீங்கள் எப்படி இருக்கிறீர்கள்?' : 'I\'m doing great, thank you! Everything is running smoothly and 100% offline.');
     speakResponse(reply, lang);
     return;
   }
 
-  // 10. PERSONAL AI JOKE
+  // 16. ALEXA HUMOR / JOKES
   if (lower.includes('joke') || lower.includes('ஜோக்')) {
-    const reply = lang === 'tanglish'
-      ? 'Boss, Peter Parker kitta EDITH glasses kudutha maadhiri, unga phone control-ah Joe kitta kuduthuteenga! Zero lag, 100 percent offline security!'
-      : (lang === 'tamil' ? 'பீட்டர் பார்க்கர் ஒரு முறை கேட்டார், எடித் இணையம் இல்லாமல் வேலை செய்யுமா என்று. நான் சொன்னேன்: பாஸ், இது டோனி ஸ்டார்க்கின் ஜோ மாடல்!' : 'Peter Parker once asked if I needed Wi-Fi. I replied: Sir, Even Dead, I\'m The Hero doesn\'t rely on spotty cell towers.');
+    const jokes = {
+      tanglish: 'Oru computer doc kitta pochu... doc ketaru: "Enna aachu?"... Computer sonnuchu: "Enakku virus pidichurukku!" haha!',
+      tamil: 'ஒரு கம்ப்யூட்டர் மருத்துவரிடம் சென்றது. மருத்துவர் கேட்டார்: என்ன பிரச்சனை? கம்ப்யூட்டர் சொன்னது: எனக்கு வைரஸ் காய்ச்சல்!',
+      english: 'Why was the mobile phone wearing glasses? Because it lost its contacts!'
+    };
+    const reply = jokes[lang] || jokes.english;
     speakResponse(reply, lang);
     return;
   }
 
-  // 11. IDENTITY: "ne yaaru?" / "who are you?" / "joe"
-  if (lower.includes('ne yaaru') || lower.includes('who are you') || lower.includes('நீ யாரு') || lower.includes('about joe') || lower.includes('joe')) {
+  // 17. IDENTITY: "ne yaaru?" / "who are you?" / "about alexa"
+  if (lower.includes('ne yaaru') || lower.includes('who are you') || lower.includes('நீ யாரு') || lower.includes('about alexa')) {
     const reply = lang === 'tanglish'
-      ? 'Naan unga personal AI assistant Joe, boss! Spider-Man EDITH maadhiri unga phone calls, torch, apps, volume ellathayum touchless voice commands-la handle pannuven. Touchless screen unlock-um ready!'
+      ? 'Naan unga personal AI assistant Alexa! Internet thevai illama unga phone calls, apps, torch, volume, brightness, settings, touchless unlock ellathayum handle pannuven.'
       : (lang === 'tamil'
-        ? 'நான் ஜோ (Joe). Spider-Man EDITH போல இணையம் இல்லாமல் உங்கள் போனை முழுமையாகக் கட்டுப்படுத்தும் உங்கள் தனிப்பட்ட ஏஐ உதவியாளர்.'
-        : 'I am JOE, your personal tactical artificial intelligence. Inspired by E.D.I.T.H., I control your phone hardware, apps, and communication touchlessly without internet.');
+        ? 'நான் அலெக்சா. இணையம் இல்லாமல் உங்கள் போனை முழுமையாகக் கட்டுப்படுத்தும் உங்கள் தனிப்பட்ட ஏஐ உதவியாளர்.'
+        : 'I am Alexa, your personal offline AI assistant. I help you control all device settings, hardware, volume, apps, dial calls, and manage tasks touchlessly without internet.');
     speakResponse(reply, lang);
     return;
   }
 
-  // DEFAULT PERSONAL ASSISTANT FALLBACK
+  // DEFAULT ALEXA FALLBACK
   const defaultReply = lang === 'tanglish'
-    ? `Neenga sonnadhu kettuchu, boss: "${input}". Joe offline-la execute panren!`
-    : (lang === 'tamil' ? `உங்கள் கட்டளை "${input}" பெறப்பட்டது பாஸ்.` : `Directive "${input}" acknowledged, sir.`);
-  triggerPhoneAction('Personal Command', input, '⚡');
+    ? `Neenga sonnadhu kettuchu: "${cleaned}". Alexa offline-la execute panren!`
+    : (lang === 'tamil' ? `உங்கள் கட்டளை "${cleaned}" பெறப்பட்டது.` : `I heard "${cleaned}". Executing on your device.`);
+  triggerPhoneAction('Voice Command', cleaned, '🔵');
   speakResponse(defaultReply, lang);
 }
 
 // ==========================================================================
-// Speech Synthesis (TTS) - E.D.I.T.H. Style Clear Voice
+// Speech Synthesis (TTS) - Alexa Natural Female Voice
 // ==========================================================================
 function speakResponse(text, lang = 'english') {
   const aiResponseEl = document.getElementById('ai-response');
-  const arcReactor = document.getElementById('arc-reactor');
+  const echoCore = document.getElementById('echo-reactor');
+  const lightRing = document.getElementById('echo-light-ring');
   const speechState = document.getElementById('speech-state');
 
   if (aiResponseEl) aiResponseEl.innerText = text;
-  if (arcReactor) arcReactor.classList.add('speaking');
-  if (speechState) speechState.innerText = `JOE SPEAKING (${lang.toUpperCase()})`;
+  if (echoCore) echoCore.classList.add('speaking');
+  if (lightRing) lightRing.classList.add('speaking');
+  if (speechState) speechState.innerText = `ALEXA SPEAKING (${lang.toUpperCase()})`;
   isSpeaking = true;
 
   if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel(); // Stop any pending utterances
+    window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
 
-    // E.D.I.T.H. Voice Cadence: Clean, articulate, moderate rate
-    utterance.rate = personas[currentPersona].rate || 0.94;
-    utterance.pitch = personas[currentPersona].pitch || 1.05;
+    // Alexa Voice Modulation: Warm, courteous, articulate
+    utterance.rate = personas[currentPersona].rate || 0.95;
+    utterance.pitch = personas[currentPersona].pitch || 1.02;
     utterance.volume = 1.0;
 
-    const matchedVoice = getEdithVoice(lang);
+    const matchedVoice = getAlexaVoice(lang);
     if (matchedVoice) {
       utterance.voice = matchedVoice;
       utterance.lang = matchedVoice.lang;
@@ -431,25 +822,27 @@ function speakResponse(text, lang = 'english') {
 
     utterance.onend = () => {
       isSpeaking = false;
-      if (arcReactor) arcReactor.classList.remove('speaking');
-      if (speechState) speechState.innerText = isListening ? 'LISTENING (MIC ACTIVE)' : 'VOICE IDLE';
+      if (echoCore) echoCore.classList.remove('speaking');
+      if (lightRing) lightRing.classList.remove('speaking');
+      if (speechState) speechState.innerText = isListening ? 'LISTENING (MIC ACTIVE)' : 'ALEXA STANDBY';
     };
 
     utterance.onerror = () => {
       isSpeaking = false;
-      if (arcReactor) arcReactor.classList.remove('speaking');
-      if (speechState) speechState.innerText = 'VOICE IDLE';
+      if (echoCore) echoCore.classList.remove('speaking');
+      if (lightRing) lightRing.classList.remove('speaking');
+      if (speechState) speechState.innerText = 'ALEXA STANDBY';
     };
 
-    // Small delay ensures previous speech cancel is fully processed
     setTimeout(() => {
       window.speechSynthesis.speak(utterance);
-    }, 50);
+    }, 60);
   } else {
     setTimeout(() => {
       isSpeaking = false;
-      if (arcReactor) arcReactor.classList.remove('speaking');
-      if (speechState) speechState.innerText = 'VOICE IDLE';
+      if (echoCore) echoCore.classList.remove('speaking');
+      if (lightRing) lightRing.classList.remove('speaking');
+      if (speechState) speechState.innerText = 'ALEXA STANDBY';
     }, 2000);
   }
 }
@@ -460,30 +853,33 @@ function speakResponse(text, lang = 'english') {
 function initSpeechRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    logTicker('Web Speech API not supported in this browser. Quick test buttons available.');
+    logTicker('Web Speech API not supported. Use quick test buttons or manual prompt.');
     return;
   }
 
   recognition = new SpeechRecognition();
   recognition.continuous = true;
   recognition.interimResults = false;
-  recognition.lang = 'en-IN';
+  recognition.lang = 'en-IN'; // en-IN handles English & Tanglish fluidly
 
   recognition.onstart = () => {
     isListening = true;
     updateMicVisualState(true);
-    logTicker('Microphone active. Speak to Joe in Tanglish, Tamil or English.');
+    playAlexaWakeChime();
+    logTicker('Microphone listening. Say "Alexa" or a command.');
   };
 
   recognition.onresult = (event) => {
     const lastResultIndex = event.results.length - 1;
     const transcript = event.results[lastResultIndex][0].transcript.trim();
     if (transcript) {
+      playAlexaSuccessChime();
       processCommand(transcript);
     }
   };
 
-  recognition.onerror = () => {
+  recognition.onerror = (e) => {
+    console.log('Recognition error:', e);
     updateMicVisualState(false);
   };
 
@@ -497,8 +893,10 @@ function initSpeechRecognition() {
 }
 
 function triggerMic() {
+  playAlexaWakeChime();
+
   if (!recognition) {
-    simulateVoice('torch podu');
+    simulateVoice('Alexa, brightness kootu');
     return;
   }
 
@@ -516,19 +914,22 @@ function triggerMic() {
 }
 
 function updateMicVisualState(active) {
-  const arc = document.getElementById('arc-reactor');
+  const echoCore = document.getElementById('echo-reactor');
+  const lightRing = document.getElementById('echo-light-ring');
   const speechState = document.getElementById('speech-state');
   const micFill = document.getElementById('mic-fill');
   const statAudio = document.getElementById('stat-audio-status');
 
   if (active) {
-    if (arc) arc.classList.add('listening');
+    if (echoCore) echoCore.classList.add('listening');
+    if (lightRing) lightRing.classList.add('listening');
     if (speechState) speechState.innerText = 'LISTENING (MIC ACTIVE)';
     if (micFill) micFill.style.width = '85%';
-    if (statAudio) statAudio.innerText = 'Listening...';
+    if (statAudio) statAudio.innerText = 'Listening for "Alexa"...';
   } else {
-    if (arc) arc.classList.remove('listening');
-    if (speechState) speechState.innerText = 'VOICE IDLE';
+    if (echoCore) echoCore.classList.remove('listening');
+    if (lightRing) lightRing.classList.remove('listening');
+    if (speechState) speechState.innerText = 'ALEXA STANDBY';
     if (micFill) micFill.style.width = '20%';
     if (statAudio) statAudio.innerText = 'Mic Ready';
   }
@@ -538,12 +939,16 @@ function updateMicVisualState(active) {
 // Simulation Helpers
 // ==========================================================================
 function simulateVoice(commandText) {
-  processCommand(commandText);
+  playAlexaWakeChime();
+  setTimeout(() => {
+    processCommand(commandText);
+  }, 250);
 }
 
 function submitManualText() {
   const inputEl = document.getElementById('manual-text-input');
   if (inputEl && inputEl.value.trim() !== '') {
+    playAlexaSuccessChime();
     processCommand(inputEl.value.trim());
     inputEl.value = '';
   }
@@ -596,7 +1001,9 @@ function filterCommands(category) {
   const tabs = document.querySelectorAll('.cmd-tab');
   tabs.forEach(t => t.classList.remove('active'));
 
-  event.currentTarget.classList.add('active');
+  if (window.event && window.event.currentTarget) {
+    window.event.currentTarget.classList.add('active');
+  }
 
   items.forEach(item => {
     if (category === 'all' || item.getAttribute('data-lang') === category) {
@@ -617,7 +1024,7 @@ function logTicker(msg) {
 }
 
 // ==========================================================================
-// Canvas Audio Visualizer
+// Canvas Audio Visualizer (Alexa Waveform)
 // ==========================================================================
 function initCanvasVisualizer() {
   const canvas = document.getElementById('waveform-canvas');
@@ -631,49 +1038,52 @@ function initCanvasVisualizer() {
     const height = canvas.height;
     const centerY = height / 2;
 
-    const isEdith = currentPersona === 'joe_edith';
-    const primaryColor = isEdith ? '#ff2052' : '#00f0ff';
-    const secondaryColor = isEdith ? 'rgba(255, 32, 82, 0.18)' : 'rgba(0, 240, 255, 0.15)';
+    const isEcho = currentPersona === 'alexa_echo';
+    const primaryColor = isEcho ? '#00cae0' : '#ff9900';
+    const secondaryColor = isEcho ? 'rgba(0, 202, 224, 0.15)' : 'rgba(255, 153, 0, 0.15)';
 
-    let amplitude = 6;
-    if (isSpeaking) amplitude = 28 + Math.sin(phase * 4) * 12;
-    else if (isListening) amplitude = 18 + Math.cos(phase * 3) * 8;
+    let amplitude = 5;
+    if (isSpeaking) amplitude = 26 + Math.sin(phase * 4) * 10;
+    else if (isListening) amplitude = 16 + Math.cos(phase * 3) * 7;
 
+    // Fill wave
     ctx.beginPath();
     ctx.moveTo(0, centerY);
     for (let x = 0; x < width; x += 4) {
-      const y = centerY + Math.sin((x * 0.03) + phase) * amplitude * Math.sin(x / width * Math.PI);
+      const y = centerY + Math.sin((x * 0.025) + phase) * amplitude * Math.sin(x / width * Math.PI);
       ctx.lineTo(x, y);
     }
     ctx.lineTo(width, centerY);
     ctx.fillStyle = secondaryColor;
     ctx.fill();
 
+    // Primary Alexa Cyan stroke
     ctx.beginPath();
     ctx.lineWidth = 2.5;
     ctx.strokeStyle = primaryColor;
-    ctx.shadowBlur = 12;
+    ctx.shadowBlur = 10;
     ctx.shadowColor = primaryColor;
 
     for (let x = 0; x < width; x += 2) {
-      const y = centerY + Math.sin((x * 0.04) + phase) * amplitude * Math.sin(x / width * Math.PI);
+      const y = centerY + Math.sin((x * 0.035) + phase) * amplitude * Math.sin(x / width * Math.PI);
       if (x === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
     ctx.stroke();
     ctx.shadowBlur = 0;
 
+    // Secondary Electric Blue stroke
     ctx.beginPath();
     ctx.lineWidth = 1.2;
-    ctx.strokeStyle = isEdith ? '#00ffaa' : '#ffd700';
+    ctx.strokeStyle = isEcho ? '#0055ff' : '#00a8e8';
     for (let x = 0; x < width; x += 3) {
-      const y = centerY + Math.cos((x * 0.05) - (phase * 1.5)) * (amplitude * 0.6) * Math.sin(x / width * Math.PI);
+      const y = centerY + Math.cos((x * 0.045) - (phase * 1.4)) * (amplitude * 0.6) * Math.sin(x / width * Math.PI);
       if (x === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
     ctx.stroke();
 
-    phase += 0.07;
+    phase += 0.06;
     animationFrameId = requestAnimationFrame(draw);
   }
 
@@ -698,10 +1108,10 @@ window.addEventListener('appinstalled', () => {
   deferredPrompt = null;
   const installBtn = document.getElementById('btn-install-pwa');
   if (installBtn) {
-    installBtn.innerHTML = '<span>✅</span> APP INSTALLED';
+    installBtn.innerHTML = '<span>✅</span> ALEXA INSTALLED';
     installBtn.disabled = true;
   }
-  showTacticalNotification('JOE ASSISTANT INSTALLED ON DEVICE');
+  logTicker('Alexa App installed on device home screen.');
 });
 
 function installPwaApp() {
@@ -709,12 +1119,11 @@ function installPwaApp() {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        console.log('User installed JOE App');
+        console.log('User installed Alexa App');
       }
       deferredPrompt = null;
     });
   } else {
-    alert('To install JOE directly on your phone:\n\n1. On Android Chrome: Tap menu (⋮) -> "Install App" or "Add to Home screen"\n2. On iPhone Safari: Tap the Share button -> "Add to Home Screen"\n\nOnce added, JOE runs full-screen 24/7 like a native mobile app!');
+    alert('To install Alexa directly on your phone:\n\n1. On Android Chrome: Tap menu (⋮) -> "Install App" or "Add to Home screen"\n2. On iPhone Safari: Tap the Share button -> "Add to Home Screen"\n\nOnce added, Alexa runs full-screen 24/7 like a native mobile app with 100% offline support!');
   }
 }
-
