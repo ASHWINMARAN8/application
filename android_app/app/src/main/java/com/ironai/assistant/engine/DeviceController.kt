@@ -62,7 +62,7 @@ class DeviceController(private val context: Context) {
         try {
             val wakeLock = powerManager.newWakeLock(
                 PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-                "AlexaAssistant:TouchlessWake"
+                "SiuAssistant:TouchlessWake"
             )
             wakeLock.acquire(3000)
 
@@ -311,7 +311,7 @@ class DeviceController(private val context: Context) {
     // ==========================================
     // 7. TIMERS & ALARMS
     // ==========================================
-    fun setTimer(seconds: Int, label: String = "Alexa Timer"): Boolean {
+    fun setTimer(seconds: Int, label: String = "SIU Timer"): Boolean {
         return try {
             val intent = Intent(AlarmClock.ACTION_SET_TIMER).apply {
                 putExtra(AlarmClock.EXTRA_LENGTH, seconds)
@@ -326,7 +326,7 @@ class DeviceController(private val context: Context) {
         }
     }
 
-    fun setAlarm(hour: Int, minute: Int, message: String = "Alexa Alarm"): Boolean {
+    fun setAlarm(hour: Int, minute: Int, message: String = "SIU Alarm"): Boolean {
         return try {
             val intent = Intent(AlarmClock.ACTION_SET_ALARM).apply {
                 putExtra(AlarmClock.EXTRA_HOUR, hour)

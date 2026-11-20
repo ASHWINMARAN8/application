@@ -36,7 +36,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ALEXA ECHO OS"
+                android:text="SIU CORE OS"
                 android:textColor="@color/text_white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -127,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Say 'Alexa' / 'அலெக்சா' or Tap Echo Ring"
+        android:text="Say 'Siu' / 'சியு' or Tap Core Ring"
         android:textColor="@color/text_muted"
         android:textSize="13sp"
         android:textStyle="bold"
@@ -141,7 +141,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="ALEXA STANDBY"
+        android:text="SIU STANDBY"
         android:textColor="@color/alexa_primary"
         android:textSize="13sp"
         android:textStyle="bold"
@@ -164,7 +164,7 @@
             android:id="@+id/tv_user_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You: 'Alexa, brightness kootu' / 'Alexa, wifi settings open pannu'"
+            android:text="You: 'Siu, brightness kootu' / 'Siu, wifi settings open pannu'"
             android:textColor="@color/text_muted"
             android:textSize="12sp" />
 
@@ -173,7 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="ALEXA: Hello! Complete device settings & hardware control 100% offline."
+            android:text="SIU: Hello! Complete device settings & hardware control 100% offline."
             android:textColor="@color/text_white"
             android:textSize="14sp"
             android:textStyle="bold" />

@@ -1,6 +1,6 @@
 {
-  "name": "Alexa — Offline Voice AI Assistant (Echo Edition)",
-  "short_name": "Alexa",
+  "name": "SIU — Offline Voice AI Assistant",
+  "short_name": "SIU",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#060b13",

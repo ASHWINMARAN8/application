@@ -20,7 +20,7 @@
   --bg-dark: #060b13;
 }
 
-body.theme-alexa-echo {
+body.theme-siu-core, .theme-alexa-echo {
   --theme-primary: #00cae0;
   --theme-secondary: #0055ff;
   --theme-accent: #00ffcc;
@@ -32,7 +32,7 @@ body.theme-alexa-echo {
   --bg-dark: #060b13;
 }
 
-body.theme-alexa-show {
+body.theme-siu-pro, .theme-alexa-show {
   /* Echo Show Theme (Alexa Amber / Gold & Indigo Smart Display) */
   --theme-primary: #ff9900;
   --theme-secondary: #00a8e8;

@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         deviceController = DeviceController(this)
         ttsManager = IronTtsManager(this, personaManager) { isSpeaking ->
             runOnUiThread {
-                binding.tvSpeechState.text = if (isSpeaking) "ALEXA SPEAKING..." else "ALEXA STANDBY"
+                binding.tvSpeechState.text = if (isSpeaking) "SIU SPEAKING..." else "SIU STANDBY"
                 if (isSpeaking) {
                     binding.btnArcCore.setCardBackgroundColor(
                         ContextCompat.getColor(this, R.color.alexa_primary)
@@ -117,34 +117,34 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnArcCore.setOnClickListener {
-            binding.tvSpeechState.text = "LISTENING FOR \"ALEXA\"..."
+            binding.tvSpeechState.text = "LISTENING FOR \"SIU\"..."
             ttsManager.speak(personaManager.getGreeting(personaManager.preferredLanguage), false)
         }
 
         binding.btnEnableAccessibility.setOnClickListener {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             startActivity(intent)
-            Toast.makeText(this, "Enable 'Alexa Assistant' in Accessibility to allow full touchless phone control", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Enable 'SIU Assistant' in Accessibility to allow full touchless phone control", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun applyPersonaTheme(persona: PersonaType) {
         if (persona == PersonaType.ECHO_SHOW || persona == PersonaType.EDITH) {
-            binding.tvTitle.text = "ALEXA SHOW"
+            binding.tvTitle.text = "SIU PRO"
             binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.show_primary))
-            binding.tvBrandSub.text = "ECHO SHOW HUB // SMART DISPLAY"
+            binding.tvBrandSub.text = "SIU PRO HUB // SMART DISPLAY"
             binding.tvBrandSub.setTextColor(ContextCompat.getColor(this, R.color.show_secondary))
-            binding.btnPersonaToggle.text = "SWITCH: ECHO"
+            binding.btnPersonaToggle.text = "SWITCH: SIU CORE"
             binding.btnPersonaToggle.backgroundTintList = ContextCompat.getColorStateList(this, R.color.show_primary)
             binding.tvSpeechState.setTextColor(ContextCompat.getColor(this, R.color.show_primary))
             binding.ivMicIcon.setColorFilter(ContextCompat.getColor(this, R.color.show_primary))
             ttsManager.speak(personaManager.getGreeting(personaManager.preferredLanguage), false)
         } else {
-            binding.tvTitle.text = "ALEXA ECHO"
+            binding.tvTitle.text = "SIU CORE"
             binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_white))
-            binding.tvBrandSub.text = "AMAZON ECHO SUITE // EDGE AI"
+            binding.tvBrandSub.text = "SIU SUITE // EDGE AI"
             binding.tvBrandSub.setTextColor(ContextCompat.getColor(this, R.color.alexa_primary))
-            binding.btnPersonaToggle.text = "SWITCH: SHOW"
+            binding.btnPersonaToggle.text = "SWITCH: SIU PRO"
             binding.btnPersonaToggle.backgroundTintList = ContextCompat.getColorStateList(this, R.color.alexa_primary)
             binding.tvSpeechState.setTextColor(ContextCompat.getColor(this, R.color.alexa_primary))
             binding.ivMicIcon.setColorFilter(ContextCompat.getColor(this, R.color.alexa_primary))

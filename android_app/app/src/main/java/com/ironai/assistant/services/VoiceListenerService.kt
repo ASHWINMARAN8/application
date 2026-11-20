@@ -22,7 +22,7 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Continuous background voice listener service for Alexa Offline Engine.
+ * Continuous background voice listener service for SIU Offline Engine.
  * Operates offline using Android's on-device speech recognizer with EXTRA_PREFER_OFFLINE = true.
  * Flawlessly routes English, Tamil (தமிழ்), and Tanglish commands to the phone controller.
  * Highly optimized for low-end Android devices with near-zero battery drain.
@@ -38,7 +38,7 @@ class VoiceListenerService : Service(), RecognitionListener {
     private var isListening = false
 
     companion object {
-        const val CHANNEL_ID = "AlexaVoiceServiceChannel"
+        const val CHANNEL_ID = "SiuVoiceServiceChannel"
         const val NOTIFICATION_ID = 101
 
         var onSpeechResultCallback: ((String, String, ResponseLanguage) -> Unit)? = null
@@ -69,7 +69,7 @@ class VoiceListenerService : Service(), RecognitionListener {
             speechRecognizer?.setRecognitionListener(this)
             startListening()
         } else {
-            Log.e("AlexaVoice", "Offline speech recognition not available on this device.")
+            Log.e("SiuVoice", "Offline speech recognition not available on this device.")
         }
     }
 
@@ -143,7 +143,7 @@ class VoiceListenerService : Service(), RecognitionListener {
                 when (lang) {
                     ResponseLanguage.TANGLISH -> "Phone display-ah lock pannitten."
                     ResponseLanguage.TAMIL -> "போன் திரை லாக் செய்யப்பட்டது."
-                    ResponseLanguage.ENGLISH -> "Device locked. Say \"Alexa\" to wake."
+                    ResponseLanguage.ENGLISH -> "Device locked. Say \"Siu\" to wake."
                 }
             }
 
@@ -345,7 +345,7 @@ class VoiceListenerService : Service(), RecognitionListener {
             // Timer & Alarm
             CommandType.SET_TIMER -> {
                 val mins = parsed.valueSlot ?: 5
-                deviceController.setTimer(mins * 60, "Alexa $mins Min Timer")
+                deviceController.setTimer(mins * 60, "SIU $mins Min Timer")
                 when (lang) {
                     ResponseLanguage.TANGLISH -> "$mins minutes timer start pannitten!"
                     ResponseLanguage.TAMIL -> "$mins நிமிடங்களுக்கான டைமர் தொடங்கப்பட்டது."
@@ -354,7 +354,7 @@ class VoiceListenerService : Service(), RecognitionListener {
             }
             CommandType.SET_ALARM -> {
                 val hour = parsed.valueSlot ?: 7
-                deviceController.setAlarm(hour, 0, "Alexa Alarm")
+                deviceController.setAlarm(hour, 0, "SIU Alarm")
                 when (lang) {
                     ResponseLanguage.TANGLISH -> "Kaalai $hour manikku alarm set pannitten!"
                     ResponseLanguage.TAMIL -> "காலை $hour மணிக்கு அலாரம் அமைக்கப்பட்டது."
@@ -572,7 +572,7 @@ class VoiceListenerService : Service(), RecognitionListener {
                 val br = deviceController.getBrightnessPercentage()
                 val mb = deviceController.getFreeInternalStorageMb()
                 when (lang) {
-                    ResponseLanguage.TANGLISH -> "Alexa core 100% offline normal: Battery $batt%, Volume $vol%, Brightness $br%, Storage ${mb / 1024} GB free."
+                    ResponseLanguage.TANGLISH -> "SIU core 100% offline normal: Battery $batt%, Volume $vol%, Brightness $br%, Storage ${mb / 1024} GB free."
                     ResponseLanguage.TAMIL -> "அனைத்து ஆப்லைன் அமைப்புகளும் தயார். பேட்டரி $batt சதவீதம், சத்தம் $vol சதவீதம்."
                     ResponseLanguage.ENGLISH -> "All systems nominal. Battery at $batt%, volume $vol%, brightness $br%. Running 100% offline."
                 }
@@ -586,7 +586,7 @@ class VoiceListenerService : Service(), RecognitionListener {
 
             CommandType.UNKNOWN -> {
                 when (lang) {
-                    ResponseLanguage.TANGLISH -> "Neenga sonnadhu kettuchu: \"${parsed.rawText}\". Alexa unga device-la execute panna ready!"
+                    ResponseLanguage.TANGLISH -> "Neenga sonnadhu kettuchu: \"${parsed.rawText}\". SIU unga device-la execute panna ready!"
                     ResponseLanguage.TAMIL -> "உங்கள் கட்டளை \"${parsed.rawText}\" பெறப்பட்டது."
                     ResponseLanguage.ENGLISH -> "I heard \"${parsed.rawText}\". Executing on your device."
                 }
@@ -617,8 +617,8 @@ class VoiceListenerService : Service(), RecognitionListener {
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Alexa Assistant (100% Offline)")
-            .setContentText("Listening for 'Alexa' wake word...")
+            .setContentTitle("SIU Assistant (100% Offline)")
+            .setContentText("Listening for 'Siu' wake word...")
             .setSmallIcon(android.R.drawable.ic_btn_speak_now)
             .setContentIntent(pendingIntent)
             .setOngoing(true)

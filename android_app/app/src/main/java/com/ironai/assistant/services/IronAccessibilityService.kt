@@ -10,7 +10,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 
 /**
  * Android Accessibility Service for hands-free automation.
- * Grants Alexa the power to touchlessly unlock the screen via swipe gestures,
+ * Grants SIU the power to touchlessly unlock the screen via swipe gestures,
  * tap buttons, type messages in WhatsApp, take screenshots, pull quick settings,
  * open recent apps, show power dialog, and lock the screen without root access or internet.
  */
@@ -24,7 +24,7 @@ class IronAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         instance = this
-        Log.i("AlexaAccessibility", "Alexa Accessibility Service connected and active.")
+        Log.i("SiuAccessibility", "SIU Accessibility Service connected and active.")
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -32,7 +32,7 @@ class IronAccessibilityService : AccessibilityService() {
     }
 
     override fun onInterrupt() {
-        Log.w("AlexaAccessibility", "Alexa Accessibility Service interrupted.")
+        Log.w("SiuAccessibility", "SIU Accessibility Service interrupted.")
     }
 
     override fun onDestroy() {

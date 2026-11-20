@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Alexa — Offline Voice AI Assistant (Echo Edition)</title>
+  <title>SIU — Offline Voice AI Assistant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -28,17 +28,17 @@
   <header class="hud-header">
     <div class="header-top-row">
       <div class="brand-title">
-        <span class="brand-sub">AMAZON ECHO SUITE // EDGE AI ENGINE</span>
-        <h1 id="persona-title">ALEXA <span>Echo OS (100% Offline)</span></h1>
+        <span class="brand-sub">SIU SUITE // EDGE AI ENGINE</span>
+        <h1 id="persona-title">SIU <span>OS (100% Offline)</span></h1>
       </div>
 
       <!-- Central Switcher (Alexa Echo <-> Alexa Show) -->
       <div class="persona-switch-container">
-        <button class="switch-btn active" id="btn-alexa-echo" onclick="switchPersona('alexa_echo')">
-          <span class="icon">🔵</span> ECHO CORE
+        <button class="switch-btn active" id="btn-siu-core" onclick="switchPersona('siu_core')">
+          <span class="icon">🔵</span> SIU CORE
         </button>
-        <button class="switch-btn" id="btn-alexa-show" onclick="switchPersona('alexa_show')">
-          <span class="icon">🟠</span> ECHO SHOW
+        <button class="switch-btn" id="btn-siu-pro" onclick="switchPersona('siu_pro')">
+          <span class="icon">🟠</span> SIU PRO
         </button>
       </div>
     </div>
@@ -62,7 +62,7 @@
         <span>📲</span> INSTALL PHONE APP
       </button>
       <a class="btn-app-action apk-btn" id="btn-download-apk"
-        href="https://github.com/ASHWINMARAN8/application/releases/download/v1.0.0/Alexa-Offline-AI-v1.0.0.apk"
+        href="https://github.com/ASHWINMARAN8/application/releases/download/v1.0.0/SIU-Offline-AI-v1.0.0.apk"
         target="_blank" rel="noopener">
         <span>🤖</span> DOWNLOAD ANDROID APK
       </a>
@@ -94,15 +94,15 @@
 
         <div class="wake-word-hint">
           <span class="tag">VOICE TRIGGER // TOUCHLESS</span>
-          <span class="wake-text" id="wake-prompt">Say "Alexa" or tap Echo Ring to speak</span>
+          <span class="wake-text" id="wake-prompt">Say "Siu" or tap Core Ring to speak</span>
         </div>
       </div>
 
       <!-- Audio Frequency Spectrum Visualizer -->
       <div class="visualizer-wrapper">
         <div class="visualizer-label">
-          <span>ALEXA SPECTRUM (TANGLISH / தமிழ் / ENG)</span>
-          <span id="speech-state">ALEXA STANDBY</span>
+          <span>SIU SPECTRUM (TANGLISH / தமிழ் / ENG)</span>
+          <span id="speech-state">SIU STANDBY</span>
         </div>
         <canvas id="waveform-canvas" width="600" height="70"></canvas>
       </div>
@@ -111,11 +111,11 @@
       <div class="dialogue-box">
         <div class="speech-bubble user-bubble" id="user-speech">
           <span class="speaker-tag">YOU (VOICE INPUT)</span>
-          <p id="user-transcript">"Try: 'Alexa, brightness kootu' or 'Alexa, wifi settings open pannu' or 'Alexa, take photo'"</p>
+          <p id="user-transcript">"Try: 'Siu, brightness kootu' or 'Siu, wifi settings open pannu' or 'Siu, take photo'"</p>
         </div>
         <div class="speech-bubble ai-bubble" id="ai-speech">
-          <span class="speaker-tag" id="ai-tag">ALEXA (ECHO CORE)</span>
-          <p id="ai-response">Hello! I'm Alexa. All offline device settings, apps, hardware, and voice controls are active and ready.</p>
+          <span class="speaker-tag" id="ai-tag">SIU (CORE)</span>
+          <p id="ai-response">Hello! I'm SIU. All offline device settings, apps, hardware, and voice controls are active and ready.</p>
         </div>
       </div>
     </section>
@@ -138,320 +138,320 @@
       <div class="commands-scroll-list" id="command-list">
 
         <!-- Touchless Unlock & Lock -->
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, phone ah unlock pannu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, phone ah unlock pannu')">
           <div class="cmd-icon">🔓</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, phone ah unlock pannu"</span>
+            <span class="cmd-phrase">"Siu, phone ah unlock pannu"</span>
             <span class="cmd-action">Touchless Screen Unlock (Without touching phone)</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, phone ah lock pannu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, phone ah lock pannu')">
           <div class="cmd-icon">🔒</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, phone ah lock pannu"</span>
+            <span class="cmd-phrase">"Siu, phone ah lock pannu"</span>
             <span class="cmd-action">Locks phone screen immediately</span>
           </div>
         </div>
 
         <!-- Tanglish Commands -->
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, torch podu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, torch podu')">
           <div class="cmd-icon">🔦</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, torch podu" / "torch ah off pannu"</span>
+            <span class="cmd-phrase">"Siu, torch podu" / "torch ah off pannu"</span>
             <span class="cmd-action">Replies: "Sure! Torch on pannitten."</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, brightness kootu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, brightness kootu')">
           <div class="cmd-icon">🔆</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, brightness kootu" / "brightness max"</span>
+            <span class="cmd-phrase">"Siu, brightness kootu" / "brightness max"</span>
             <span class="cmd-action">Hardware screen brightness control</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, wifi settings open pannu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, wifi settings open pannu')">
           <div class="cmd-icon">📶</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, wifi settings open pannu"</span>
+            <span class="cmd-phrase">"Siu, wifi settings open pannu"</span>
             <span class="cmd-action">Directly opens Wi-Fi control panel</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, bluetooth settings open pannu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, bluetooth settings open pannu')">
           <div class="cmd-icon">ᛒ</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, bluetooth settings open pannu"</span>
+            <span class="cmd-phrase">"Siu, bluetooth settings open pannu"</span>
             <span class="cmd-action">Opens Bluetooth pairing panel</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, photo edu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, photo edu')">
           <div class="cmd-icon">📸</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, photo edu" / "take photo"</span>
+            <span class="cmd-phrase">"Siu, photo edu" / "take photo"</span>
             <span class="cmd-action">Opens Camera and triggers photo capture</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, play music')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, play music')">
           <div class="cmd-icon">🎵</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, play music" / "song pause"</span>
+            <span class="cmd-phrase">"Siu, play music" / "song pause"</span>
             <span class="cmd-action">Controls local media audio player</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, quick settings kaatu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, quick settings kaatu')">
           <div class="cmd-icon">🎛️</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, quick settings kaatu"</span>
+            <span class="cmd-phrase">"Siu, quick settings kaatu"</span>
             <span class="cmd-action">Pulls down Quick Settings notification shade</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, screenshot edu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, screenshot edu')">
           <div class="cmd-icon">📱</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, screenshot edu"</span>
+            <span class="cmd-phrase">"Siu, screenshot edu"</span>
             <span class="cmd-action">Captures screen via accessibility service</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, amma ku call pannu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, amma ku call pannu')">
           <div class="cmd-icon">📞</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, amma ku call pannu"</span>
+            <span class="cmd-phrase">"Siu, amma ku call pannu"</span>
             <span class="cmd-action">Replies: "Amma-kku ippo call panren."</span>
           </div>
         </div>
 
         <div class="cmd-item" data-lang="tanglish"
-          onclick="simulateVoice('Alexa, ram ku whatsapp message anupu: na kelambiten')">
+          onclick="simulateVoice('Siu, ram ku whatsapp message anupu: na kelambiten')">
           <div class="cmd-icon">💬</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, ram ku message anupu: na kelambiten"</span>
+            <span class="cmd-phrase">"Siu, ram ku message anupu: na kelambiten"</span>
             <span class="cmd-action">Sends WhatsApp message in Tanglish</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, youtube open pannu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, youtube open pannu')">
           <div class="cmd-icon">🚀</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, youtube open pannu"</span>
+            <span class="cmd-phrase">"Siu, youtube open pannu"</span>
             <span class="cmd-action">Replies: "YouTube open panren."</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, sound ah kootu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, sound ah kootu')">
           <div class="cmd-icon">🔊</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, sound ah kootu" / "volume korai"</span>
+            <span class="cmd-phrase">"Siu, sound ah kootu" / "volume korai"</span>
             <span class="cmd-action">Replies: "Sound 80% kku kootitten."</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, battery evvalavu irukku?')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, battery evvalavu irukku?')">
           <div class="cmd-icon">🔋</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, battery evvalavu irukku?"</span>
+            <span class="cmd-phrase">"Siu, battery evvalavu irukku?"</span>
             <span class="cmd-action">Replies: "Battery 88% irukku!"</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, timer 5 minutes vai')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, timer 5 minutes vai')">
           <div class="cmd-icon">⏱️</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, timer 5 minutes vai"</span>
+            <span class="cmd-phrase">"Siu, timer 5 minutes vai"</span>
             <span class="cmd-action">Sets 5-minute countdown timer</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, epdi iruka?')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, epdi iruka?')">
           <div class="cmd-icon">🤝</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, epdi iruka?"</span>
-            <span class="cmd-action">Polite Alexa conversational banter</span>
+            <span class="cmd-phrase">"Siu, epdi iruka?"</span>
+            <span class="cmd-action">SIU conversational banter</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Alexa, joke sollu')">
+        <div class="cmd-item" data-lang="tanglish" onclick="simulateVoice('Siu, joke sollu')">
           <div class="cmd-icon">😂</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, joke sollu"</span>
-            <span class="cmd-action">Alexa smart assistant joke</span>
+            <span class="cmd-phrase">"Siu, joke sollu"</span>
+            <span class="cmd-action">SIU assistant joke</span>
           </div>
         </div>
 
         <!-- Tamil Commands -->
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, போனை அன்லாக் பண்ணு')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, போனை அன்லாக் பண்ணு')">
           <div class="cmd-icon">🔓</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, போனை அன்லாக் பண்ணு"</span>
+            <span class="cmd-phrase">"சியு, போனை அன்லாக் பண்ணு"</span>
             <span class="cmd-action">Touchless screen unlock in Tamil</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, டார்ச் போடு')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, டார்ச் போடு')">
           <div class="cmd-icon">🔦</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, டார்ச் போடு"</span>
+            <span class="cmd-phrase">"சியு, டார்ச் போடு"</span>
             <span class="cmd-action">Turns on Phone Flashlight</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, வெளிச்சம் கூட்டு')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, வெளிச்சம் கூட்டு')">
           <div class="cmd-icon">🔆</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, வெளிச்சம் கூட்டு"</span>
+            <span class="cmd-phrase">"சியு, வெளிச்சம் கூட்டு"</span>
             <span class="cmd-action">திரை வெளிச்சத்தை அதிகரிக்கும்</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, வைபை அமைப்புகளை திற')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, வைபை அமைப்புகளை திற')">
           <div class="cmd-icon">📶</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, வைபை அமைப்புகளை திற"</span>
+            <span class="cmd-phrase">"சியு, வைபை அமைப்புகளை திற"</span>
             <span class="cmd-action">வைஃபை செட்டிங்ஸ் திறக்கும்</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, படம் எடு')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, படம் எடு')">
           <div class="cmd-icon">📸</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, படம் எடு"</span>
+            <span class="cmd-phrase">"சியு, படம் எடு"</span>
             <span class="cmd-action">கேமராவில் புகைப்படம் எடுக்கும்</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, பாடல் இயக்கு')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, பாடல் இயக்கு')">
           <div class="cmd-icon">🎵</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, பாடல் இயக்கு"</span>
+            <span class="cmd-phrase">"சியு, பாடல் இயக்கு"</span>
             <span class="cmd-action">பாடலை பிளே செய்யும்</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, அம்மாவுக்கு கால் பண்ணு')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, அம்மாவுக்கு கால் பண்ணு')">
           <div class="cmd-icon">📞</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, அம்மாவுக்கு கால் பண்ணு"</span>
+            <span class="cmd-phrase">"சியு, அம்மாவுக்கு கால் பண்ணு"</span>
             <span class="cmd-action">Direct call to Mom</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('அலெக்சா, நீ யாரு?')">
+        <div class="cmd-item" data-lang="tamil" style="display:none;" onclick="simulateVoice('சியு, நீ யாரு?')">
           <div class="cmd-icon">🤖</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"அலெக்சா, நீ யாரு?"</span>
-            <span class="cmd-action">அலெக்சா (Alexa) அறிமுகம்</span>
+            <span class="cmd-phrase">"சியு, நீ யாரு?"</span>
+            <span class="cmd-action">சியு (SIU) அறிமுகம்</span>
           </div>
         </div>
 
         <!-- English Commands -->
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, unlock phone')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, unlock phone')">
           <div class="cmd-icon">🔓</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, unlock phone"</span>
+            <span class="cmd-phrase">"Siu, unlock phone"</span>
             <span class="cmd-action">Touchless Screen Unlock</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, turn on flashlight')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, turn on flashlight')">
           <div class="cmd-icon">🔦</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, turn on flashlight"</span>
+            <span class="cmd-phrase">"Siu, turn on flashlight"</span>
             <span class="cmd-action">Hardware camera torch toggle</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, increase brightness')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, increase brightness')">
           <div class="cmd-icon">🔆</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, increase brightness" / "set brightness to 100%"</span>
+            <span class="cmd-phrase">"Siu, increase brightness" / "set brightness to 100%"</span>
             <span class="cmd-action">Hardware display brightness control</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, open wifi settings')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, open wifi settings')">
           <div class="cmd-icon">📶</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, open wifi settings"</span>
+            <span class="cmd-phrase">"Siu, open wifi settings"</span>
             <span class="cmd-action">Directly opens device Wi-Fi settings</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, open bluetooth settings')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, open bluetooth settings')">
           <div class="cmd-icon">ᛒ</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, open bluetooth settings"</span>
+            <span class="cmd-phrase">"Siu, open bluetooth settings"</span>
             <span class="cmd-action">Opens Bluetooth pairing panel</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, take a photo')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, take a photo')">
           <div class="cmd-icon">📸</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, take a photo"</span>
+            <span class="cmd-phrase">"Siu, take a photo"</span>
             <span class="cmd-action">Captures picture with device camera</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, play music')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, play music')">
           <div class="cmd-icon">🎵</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, play music" / "pause music"</span>
+            <span class="cmd-phrase">"Siu, play music" / "pause music"</span>
             <span class="cmd-action">Controls device media playback</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, open quick settings')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, open quick settings')">
           <div class="cmd-icon">🎛️</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, open quick settings"</span>
+            <span class="cmd-phrase">"Siu, open quick settings"</span>
             <span class="cmd-action">Pulls down Quick Settings notification shade</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, take screenshot')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, take screenshot')">
           <div class="cmd-icon">📱</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, take screenshot"</span>
+            <span class="cmd-phrase">"Siu, take screenshot"</span>
             <span class="cmd-action">Captures phone screen touchlessly</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, set a timer for 10 minutes')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, set a timer for 10 minutes')">
           <div class="cmd-icon">⏱️</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, set timer for 10 minutes"</span>
+            <span class="cmd-phrase">"Siu, set timer for 10 minutes"</span>
             <span class="cmd-action">Local offline countdown timer</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, who are you?')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, who are you?')">
           <div class="cmd-icon">✨</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, who are you?"</span>
-            <span class="cmd-action">Alexa identity overview</span>
+            <span class="cmd-phrase">"Siu, who are you?"</span>
+            <span class="cmd-action">SIU identity overview</span>
           </div>
         </div>
 
-        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Alexa, tell me a joke')">
+        <div class="cmd-item" data-lang="english" style="display:none;" onclick="simulateVoice('Siu, tell me a joke')">
           <div class="cmd-icon">😂</div>
           <div class="cmd-info">
-            <span class="cmd-phrase">"Alexa, tell me a joke"</span>
-            <span class="cmd-action">Authentic Alexa humor</span>
+            <span class="cmd-phrase">"Siu, tell me a joke"</span>
+            <span class="cmd-action">SIU humor</span>
           </div>
         </div>
       </div>
 
       <!-- Live Voice Input Bar -->
       <div class="custom-input-box">
-        <input type="text" id="manual-text-input" placeholder="Say 'Alexa, brightness kootu' or 'Alexa, wifi settings'..."
+        <input type="text" id="manual-text-input" placeholder="Say 'Siu, brightness kootu' or 'Siu, wifi settings'..."
           onkeypress="handleKeypress(event)">
-        <button id="send-btn" onclick="submitManualText()">ASK ALEXA</button>
+        <button id="send-btn" onclick="submitManualText()">ASK SIU</button>
       </div>
     </section>
 
@@ -477,7 +477,7 @@
               <div class="lock-icon">🔒</div>
               <div class="lock-time" id="lock-time">12:00</div>
               <div class="lock-label">PHONE LOCKED</div>
-              <div class="lock-hint">Say "Alexa, unlock phone" or "போனை அன்லாக் பண்ணு"</div>
+              <div class="lock-hint">Say "Siu, unlock phone" or "போனை அன்லாக் பண்ணு"</div>
             </div>
 
             <!-- Virtual Phone Content -->
@@ -491,7 +491,7 @@
                 <div class="mini-ring"></div>
               </div>
               <div class="greeting-text">
-                <span class="mini-greet">Alexa Echo Standby</span>
+                <span class="mini-greet">SIU Standby</span>
                 <span class="mini-status">All Settings & Controls Ready</span>
               </div>
             </div>
@@ -551,8 +551,8 @@
   <!-- Bottom Global Log Stream -->
   <footer class="hud-footer">
     <div class="log-indicator">
-      <span class="tag">AMAZON ALEXA OFFLINE</span>
-      <span class="ticker" id="log-ticker">[SYSTEM] Alexa Core online. 100% offline edge processing ready.</span>
+      <span class="tag">SIU OFFLINE AI</span>
+      <span class="ticker" id="log-ticker">[SYSTEM] SIU Core online. 100% offline edge processing ready.</span>
     </div>
   </footer>
 

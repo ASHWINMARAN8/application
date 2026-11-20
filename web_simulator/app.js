@@ -1,12 +1,12 @@
 /* ==========================================================================
-   ALEXA // ECHO SMART VOICE AI & PHONE ASSISTANT (100% OFFLINE)
+   SIU // SMART VOICE AI & PHONE ASSISTANT (100% OFFLINE)
    Amazon Echo Signature Experience: Cyan/Blue Light Ring & Edge Intelligence
    Full English + Tamil (தமிழ்) + Tanglish On-Device AI Engine
    Features Complete Device Hardware, Settings & Accessibility Voice Controls
    ========================================================================== */
 
 // Current Persona Configuration
-let currentPersona = 'alexa_echo'; // 'alexa_echo' or 'alexa_show'
+let currentPersona = 'siu_core'; // 'siu_core' or 'siu_pro'
 let isListening = false;
 let isSpeaking = false;
 let recognition = null;
@@ -31,29 +31,29 @@ const phoneState = {
 
 // Persona Configurations
 const personas = {
-  alexa_echo: {
-    title: 'ALEXA',
-    subtitle: 'AMAZON ECHO SUITE',
-    version: 'Echo OS v6.0 (100% Offline)',
+  siu_core: {
+    title: 'SIU',
+    subtitle: 'SIU AI SUITE',
+    version: 'SIU OS v6.0 (100% Offline)',
     greetingEng: 'Hello! I\'m Alexa. Your offline smart assistant is ready for all phone operations and settings. How can I help you?',
-    greetingTam: 'வணக்கம்! நான் அலெக்சா. உங்கள் போன் மற்றும் அமைப்புகள் அனைத்தும் ஆப்லைனில் தயாராக உள்ளன. என்ன உதவி செய்ய வேண்டும்?',
-    greetingTan: 'Hello! Alexa inga iruken. Unga phone settings and hardware controls 100% offline-la ready. Enna pannanum solunga!',
-    wakePrompt: 'Say "Alexa" or tap Echo Ring to speak',
+    greetingTam: 'வணக்கம்! நான் சியு (SIU). உங்கள் போன் மற்றும் அமைப்புகள் அனைத்தும் ஆப்லைனில் தயாராக உள்ளன. என்ன உதவி செய்ய வேண்டும்?',
+    greetingTan: 'Hello! Siu inga iruken. Unga phone settings and hardware controls 100% offline-la ready. Enna pannanum solunga!',
+    wakePrompt: 'Say "Siu" or tap Core Ring to speak',
     pitch: 1.02,
     rate: 0.95,
-    tag: 'ALEXA (ECHO CORE)'
+    tag: 'SIU (CORE)'
   },
-  alexa_show: {
-    title: 'ALEXA',
-    subtitle: 'ECHO SHOW PRO',
-    version: 'Show OS v6.0 (Smart Hub Edition)',
-    greetingEng: 'Echo Show smart hub online. Ready to execute your touchless voice commands for every device setting.',
-    greetingTam: 'அலெக்சா எக்கோ ஷோ தயார் நிலையில் உள்ளது. உங்கள் சாதன அமைப்புகளின் கட்டளைகளை நிறைவேற்ற காத்திருக்கிறேன்.',
-    greetingTan: 'Echo Show hub ready boss! Phone settings, hardware and device controls 100% offline-la ready. Solunga!',
-    wakePrompt: 'Say "Alexa" or tap Echo Ring to speak',
+  siu_pro: {
+    title: 'SIU',
+    subtitle: 'SIU PRO HUB',
+    version: 'SIU OS v6.0 (Pro Edition)',
+    greetingEng: 'SIU Pro smart hub online. Ready to execute your touchless voice commands for every device setting.',
+    greetingTam: 'சியு ப்ரோ தயார் நிலையில் உள்ளது. உங்கள் சாதன அமைப்புகளின் கட்டளைகளை நிறைவேற்ற காத்திருக்கிறேன்.',
+    greetingTan: 'SIU Pro hub ready boss! Phone settings, hardware and device controls 100% offline-la ready. Solunga!',
+    wakePrompt: 'Say "Siu" or tap Core Ring to speak',
     pitch: 1.04,
     rate: 0.96,
-    tag: 'ALEXA (ECHO SHOW)'
+    tag: 'SIU (PRO)'
   }
 };
 
@@ -74,7 +74,7 @@ function getAudioContext() {
 }
 
 // Authentic Alexa 2-tone Wake Sound: 784Hz (G5) -> 1046.5Hz (C6)
-function playAlexaWakeChime() {
+function playSiuWakeChime() {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
@@ -114,7 +114,7 @@ function playAlexaWakeChime() {
 }
 
 // Confirmation Soft Tone
-function playAlexaSuccessChime() {
+function playSiuSuccessChime() {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
@@ -151,7 +151,7 @@ function preloadVoices() {
 }
 
 // Find clear, natural female Alexa-style voice
-function getAlexaVoice(lang) {
+function getSiuVoice(lang) {
   if (!cachedVoices || cachedVoices.length === 0) {
     if ('speechSynthesis' in window) cachedVoices = window.speechSynthesis.getVoices();
   }
@@ -190,7 +190,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Register service worker for 100% offline usage
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
-      .then(() => logTicker('Alexa Offline Service Worker active & cached.'))
+      .then(() => logTicker('SIU Offline Service Worker active & cached.'))
       .catch(err => console.log('SW registration error:', err));
   }
 });
@@ -216,32 +216,32 @@ function initClock() {
 function switchPersona(personaName) {
   currentPersona = personaName;
   const body = document.body;
-  const btnEcho = document.getElementById('btn-alexa-echo');
-  const btnShow = document.getElementById('btn-alexa-show');
+  const btnEcho = document.getElementById('btn-siu-core');
+  const btnShow = document.getElementById('btn-siu-pro');
   const titleEl = document.getElementById('persona-title');
   const aiTag = document.getElementById('ai-tag');
   const wakePrompt = document.getElementById('wake-prompt');
 
-  playAlexaSuccessChime();
+  playSiuSuccessChime();
 
-  if (personaName === 'alexa_echo') {
-    body.className = 'theme-alexa-echo';
+  if (personaName === 'siu_core') {
+    body.className = 'theme-siu-core';
     if (btnShow) btnShow.classList.remove('active');
     if (btnEcho) btnEcho.classList.add('active');
     if (titleEl) titleEl.innerHTML = `ALEXA <span>${personas.alexa_echo.version}</span>`;
     if (aiTag) aiTag.innerText = personas.alexa_echo.tag;
     if (wakePrompt) wakePrompt.innerText = personas.alexa_echo.wakePrompt;
     speakResponse(personas.alexa_echo.greetingTan, 'tanglish');
-    logTicker('Switched to Alexa Echo Core.');
+    logTicker('Switched to SIU Core.');
   } else {
-    body.className = 'theme-alexa-show';
+    body.className = 'theme-siu-pro';
     if (btnEcho) btnEcho.classList.remove('active');
     if (btnShow) btnShow.classList.add('active');
     if (titleEl) titleEl.innerHTML = `ALEXA <span>${personas.alexa_show.version}</span>`;
     if (aiTag) aiTag.innerText = personas.alexa_show.tag;
     if (wakePrompt) wakePrompt.innerText = personas.alexa_show.wakePrompt;
     speakResponse(personas.alexa_show.greetingTan, 'tanglish');
-    logTicker('Switched to Alexa Echo Show Hub.');
+    logTicker('Switched to SIU Pro Hub.');
   }
 }
 
@@ -283,11 +283,11 @@ function processCommand(rawInput) {
   const lang = detectLanguage(cleaned.length > 0 ? cleaned : input);
 
   // If user only says "Alexa" or greeting
-  if (lower === '' || lower === 'alexa' || lower === 'hello' || lower === 'hi' || lower === 'hey' || lower === 'vanakkam') {
-    playAlexaWakeChime();
+  if (lower === '' || lower === 'alexa' || lower === 'siu' || lower === 'siiiuuu' || lower === 'hello' || lower === 'hi' || lower === 'hey' || lower === 'vanakkam') {
+    playSiuWakeChime();
     const reply = lang === 'tanglish'
-      ? 'Solunga boss, Alexa inga iruken! Enna help venum?'
-      : (lang === 'tamil' ? 'வணக்கம், நான் அலெக்சா. உங்களுக்கு என்ன உதவி தேவை?' : 'Hello! I\'m listening. How can I help with your device?');
+      ? 'Solunga boss, Siu inga iruken! Enna help venum?'
+      : (lang === 'tamil' ? 'வணக்கம், நான் சியு (SIU). உங்களுக்கு என்ன உதவி தேவை?' : 'Hello! I\'m listening. How can I help with your device?');
     speakResponse(reply, lang);
     return;
   }
@@ -317,8 +317,8 @@ function processCommand(rawInput) {
     phoneState.isLocked = true;
     updatePhoneUI();
     const reply = lang === 'tanglish'
-      ? "Phone display-ah lock pannitten. 'Alexa' nu sonna wake aaguven."
-      : (lang === 'tamil' ? 'போன் திரை லாக் செய்யப்பட்டது.' : 'Device display locked. Say "Alexa" anytime to wake.');
+      ? "Phone display-ah lock pannitten. 'Siu' nu sonna wake aaguven."
+      : (lang === 'tamil' ? 'போன் திரை லாக் செய்யப்பட்டது.' : 'Device display locked. Say "Siu" anytime to wake.');
     triggerPhoneAction('Security Lock', 'Accessibility: Screen Locked', '🔒');
     speakResponse(reply, lang);
     return;
@@ -749,7 +749,7 @@ function processCommand(rawInput) {
   // 15. ALEXA BANTER: "How are you?" / "epdi iruka?"
   if (lower.includes('epdi iruka') || lower.includes('how are you') || lower.includes('எப்படி இருக்க')) {
     const reply = lang === 'tanglish'
-      ? 'Alexa full active-ah super-ah iruken! Device completely offline-la smooth-ah run aagudhu. Neenga epdi irukinga?'
+      ? 'Siu full active-ah super-ah iruken! Device completely offline-la smooth-ah run aagudhu. Neenga epdi irukinga?'
       : (lang === 'tamil' ? 'நான் மிகவும் சிறப்பாக இருக்கிறேன்! நீங்கள் எப்படி இருக்கிறீர்கள்?' : 'I\'m doing great, thank you! Everything is running smoothly and 100% offline.');
     speakResponse(reply, lang);
     return;
@@ -768,19 +768,19 @@ function processCommand(rawInput) {
   }
 
   // 17. IDENTITY: "ne yaaru?" / "who are you?" / "about alexa"
-  if (lower.includes('ne yaaru') || lower.includes('who are you') || lower.includes('நீ யாரு') || lower.includes('about alexa')) {
+  if (lower.includes('ne yaaru') || lower.includes('who are you') || lower.includes('நீ யாரு') || lower.includes('about alexa') || lower.includes('about siu')) {
     const reply = lang === 'tanglish'
-      ? 'Naan unga personal AI assistant Alexa! Internet thevai illama unga phone calls, apps, torch, volume, brightness, settings, touchless unlock ellathayum handle pannuven.'
+      ? 'Naan unga personal AI assistant Siu! Internet thevai illama unga phone calls, apps, torch, volume, brightness, settings, touchless unlock ellathayum handle pannuven.'
       : (lang === 'tamil'
-        ? 'நான் அலெக்சா. இணையம் இல்லாமல் உங்கள் போனை முழுமையாகக் கட்டுப்படுத்தும் உங்கள் தனிப்பட்ட ஏஐ உதவியாளர்.'
-        : 'I am Alexa, your personal offline AI assistant. I help you control all device settings, hardware, volume, apps, dial calls, and manage tasks touchlessly without internet.');
+        ? 'நான் சியு (SIU). இணையம் இல்லாமல் உங்கள் போனை முழுமையாகக் கட்டுப்படுத்தும் உங்கள் தனிப்பட்ட ஏஐ உதவியாளர்.'
+        : 'I am SIU, your personal offline AI assistant. I help you control all device settings, hardware, volume, apps, dial calls, and manage tasks touchlessly without internet.');
     speakResponse(reply, lang);
     return;
   }
 
   // DEFAULT ALEXA FALLBACK
   const defaultReply = lang === 'tanglish'
-    ? `Neenga sonnadhu kettuchu: "${cleaned}". Alexa offline-la execute panren!`
+    ? `Neenga sonnadhu kettuchu: "${cleaned}". SIU offline-la execute panren!`
     : (lang === 'tamil' ? `உங்கள் கட்டளை "${cleaned}" பெறப்பட்டது.` : `I heard "${cleaned}". Executing on your device.`);
   triggerPhoneAction('Voice Command', cleaned, '🔵');
   speakResponse(defaultReply, lang);
@@ -798,7 +798,7 @@ function speakResponse(text, lang = 'english') {
   if (aiResponseEl) aiResponseEl.innerText = text;
   if (echoCore) echoCore.classList.add('speaking');
   if (lightRing) lightRing.classList.add('speaking');
-  if (speechState) speechState.innerText = `ALEXA SPEAKING (${lang.toUpperCase()})`;
+  if (speechState) speechState.innerText = `SIU SPEAKING (${lang.toUpperCase()})`;
   isSpeaking = true;
 
   if ('speechSynthesis' in window) {
@@ -810,7 +810,7 @@ function speakResponse(text, lang = 'english') {
     utterance.pitch = personas[currentPersona].pitch || 1.02;
     utterance.volume = 1.0;
 
-    const matchedVoice = getAlexaVoice(lang);
+    const matchedVoice = getSiuVoice(lang);
     if (matchedVoice) {
       utterance.voice = matchedVoice;
       utterance.lang = matchedVoice.lang;
@@ -824,14 +824,14 @@ function speakResponse(text, lang = 'english') {
       isSpeaking = false;
       if (echoCore) echoCore.classList.remove('speaking');
       if (lightRing) lightRing.classList.remove('speaking');
-      if (speechState) speechState.innerText = isListening ? 'LISTENING (MIC ACTIVE)' : 'ALEXA STANDBY';
+      if (speechState) speechState.innerText = isListening ? 'LISTENING (MIC ACTIVE)' : 'SIU STANDBY';
     };
 
     utterance.onerror = () => {
       isSpeaking = false;
       if (echoCore) echoCore.classList.remove('speaking');
       if (lightRing) lightRing.classList.remove('speaking');
-      if (speechState) speechState.innerText = 'ALEXA STANDBY';
+      if (speechState) speechState.innerText = 'SIU STANDBY';
     };
 
     setTimeout(() => {
@@ -842,7 +842,7 @@ function speakResponse(text, lang = 'english') {
       isSpeaking = false;
       if (echoCore) echoCore.classList.remove('speaking');
       if (lightRing) lightRing.classList.remove('speaking');
-      if (speechState) speechState.innerText = 'ALEXA STANDBY';
+      if (speechState) speechState.innerText = 'SIU STANDBY';
     }, 2000);
   }
 }
@@ -865,15 +865,15 @@ function initSpeechRecognition() {
   recognition.onstart = () => {
     isListening = true;
     updateMicVisualState(true);
-    playAlexaWakeChime();
-    logTicker('Microphone listening. Say "Alexa" or a command.');
+    playSiuWakeChime();
+    logTicker('Microphone listening. Say "Siu" or a command.');
   };
 
   recognition.onresult = (event) => {
     const lastResultIndex = event.results.length - 1;
     const transcript = event.results[lastResultIndex][0].transcript.trim();
     if (transcript) {
-      playAlexaSuccessChime();
+      playSiuSuccessChime();
       processCommand(transcript);
     }
   };
@@ -893,10 +893,10 @@ function initSpeechRecognition() {
 }
 
 function triggerMic() {
-  playAlexaWakeChime();
+  playSiuWakeChime();
 
   if (!recognition) {
-    simulateVoice('Alexa, brightness kootu');
+    simulateVoice('Siu, brightness kootu');
     return;
   }
 
@@ -925,11 +925,11 @@ function updateMicVisualState(active) {
     if (lightRing) lightRing.classList.add('listening');
     if (speechState) speechState.innerText = 'LISTENING (MIC ACTIVE)';
     if (micFill) micFill.style.width = '85%';
-    if (statAudio) statAudio.innerText = 'Listening for "Alexa"...';
+    if (statAudio) statAudio.innerText = 'Listening for "Siu"...';
   } else {
     if (echoCore) echoCore.classList.remove('listening');
     if (lightRing) lightRing.classList.remove('listening');
-    if (speechState) speechState.innerText = 'ALEXA STANDBY';
+    if (speechState) speechState.innerText = 'SIU STANDBY';
     if (micFill) micFill.style.width = '20%';
     if (statAudio) statAudio.innerText = 'Mic Ready';
   }
@@ -939,7 +939,7 @@ function updateMicVisualState(active) {
 // Simulation Helpers
 // ==========================================================================
 function simulateVoice(commandText) {
-  playAlexaWakeChime();
+  playSiuWakeChime();
   setTimeout(() => {
     processCommand(commandText);
   }, 250);
@@ -948,7 +948,7 @@ function simulateVoice(commandText) {
 function submitManualText() {
   const inputEl = document.getElementById('manual-text-input');
   if (inputEl && inputEl.value.trim() !== '') {
-    playAlexaSuccessChime();
+    playSiuSuccessChime();
     processCommand(inputEl.value.trim());
     inputEl.value = '';
   }
@@ -1038,7 +1038,7 @@ function initCanvasVisualizer() {
     const height = canvas.height;
     const centerY = height / 2;
 
-    const isEcho = currentPersona === 'alexa_echo';
+    const isEcho = currentPersona === 'siu_core';
     const primaryColor = isEcho ? '#00cae0' : '#ff9900';
     const secondaryColor = isEcho ? 'rgba(0, 202, 224, 0.15)' : 'rgba(255, 153, 0, 0.15)';
 
@@ -1108,10 +1108,10 @@ window.addEventListener('appinstalled', () => {
   deferredPrompt = null;
   const installBtn = document.getElementById('btn-install-pwa');
   if (installBtn) {
-    installBtn.innerHTML = '<span>✅</span> ALEXA INSTALLED';
+    installBtn.innerHTML = '<span>✅</span> SIU INSTALLED';
     installBtn.disabled = true;
   }
-  logTicker('Alexa App installed on device home screen.');
+  logTicker('SIU App installed on device home screen.');
 });
 
 function installPwaApp() {
@@ -1119,11 +1119,11 @@ function installPwaApp() {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        console.log('User installed Alexa App');
+        console.log('User installed SIU App');
       }
       deferredPrompt = null;
     });
   } else {
-    alert('To install Alexa directly on your phone:\n\n1. On Android Chrome: Tap menu (⋮) -> "Install App" or "Add to Home screen"\n2. On iPhone Safari: Tap the Share button -> "Add to Home Screen"\n\nOnce added, Alexa runs full-screen 24/7 like a native mobile app with 100% offline support!');
+    alert('To install SIU directly on your phone:\n\n1. On Android Chrome: Tap menu (⋮) -> "Install App" or "Add to Home screen"\n2. On iPhone Safari: Tap the Share button -> "Add to Home Screen"\n\nOnce added, SIU runs full-screen 24/7 like a native mobile app with 100% offline support!');
   }
 }

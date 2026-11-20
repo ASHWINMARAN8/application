@@ -3,7 +3,7 @@ package com.ironai.assistant.engine
 import java.util.Calendar
 
 /**
- * Manages the Alexa AI persona: Echo Core (Smart Voice Assistant) vs Echo Show (Smart Hub)
+ * Manages the SIU AI persona: SIU Core (Smart Voice Assistant) vs SIU Pro (Smart Hub)
  * Supports English, pure Tamil (தமிழ்), and natural conversational Tanglish.
  * 100% Offline Edge Intelligence.
  */
@@ -34,11 +34,11 @@ class PersonaManager {
         return currentPersona
     }
 
-    // Alexa voice modulation parameters for Android TextToSpeech
+    // SIU voice modulation parameters for Android TextToSpeech
     val speechPitch: Float
         get() = when (currentPersona) {
-            PersonaType.ECHO_CORE, PersonaType.JARVIS -> 1.02f // Warm, polite, articulate Alexa voice
-            PersonaType.ECHO_SHOW, PersonaType.EDITH -> 1.05f  // Crisp, smart hub tone
+            PersonaType.ECHO_CORE, PersonaType.JARVIS -> 1.02f // Articulate, crisp SIU voice
+            PersonaType.ECHO_SHOW, PersonaType.EDITH -> 1.05f  // Dynamic, smart hub tone
         }
 
     val speechRate: Float
@@ -49,14 +49,14 @@ class PersonaManager {
 
     val displayName: String
         get() = when (currentPersona) {
-            PersonaType.ECHO_CORE, PersonaType.JARVIS -> "ALEXA"
-            PersonaType.ECHO_SHOW, PersonaType.EDITH -> "ALEXA (ECHO SHOW)"
+            PersonaType.ECHO_CORE, PersonaType.JARVIS -> "SIU"
+            PersonaType.ECHO_SHOW, PersonaType.EDITH -> "SIU (PRO)"
         }
 
     val systemSubTitle: String
         get() = when (currentPersona) {
-            PersonaType.ECHO_CORE, PersonaType.JARVIS -> "AMAZON ECHO SUITE // EDGE AI"
-            PersonaType.ECHO_SHOW, PersonaType.EDITH -> "ECHO SHOW HUB // SMART DISPLAY"
+            PersonaType.ECHO_CORE, PersonaType.JARVIS -> "SIU SUITE // EDGE AI"
+            PersonaType.ECHO_SHOW, PersonaType.EDITH -> "SIU PRO HUB // SMART DISPLAY"
         }
 
     // Time-aware Personal Greeting
@@ -72,20 +72,20 @@ class PersonaManager {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
                 when (currentPersona) {
-                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "$timeGreetingEng! Alexa inga iruken. Unga phone offline voice control la ready-ah irukku. Enna pannanum solunga!"
-                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "$timeGreetingEng! Alexa Echo Show smart hub ready. Device controls 100% offline-la ready. Solunga!"
+                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "$timeGreetingEng! Siu inga iruken. Unga phone offline voice control la ready-ah irukku. Enna pannanum solunga!"
+                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "$timeGreetingEng! SIU Pro smart hub ready. Device controls 100% offline-la ready. Solunga!"
                 }
             }
             ResponseLanguage.TAMIL -> {
                 when (currentPersona) {
-                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "வணக்கம்! நான் அலெக்சா. உங்கள் போன் கட்டுப்பாட்டு அமைப்புகள் தயாராக உள்ளன. என்ன உதவி செய்ய வேண்டும்?"
-                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "அலெக்சா எக்கோ ஷோ தயார் நிலையில் உள்ளது. உங்கள் ஆப்லைன் குரல் கட்டளைக்காக காத்திருக்கிறேன்."
+                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "வணக்கம்! நான் சியு (Siu). உங்கள் போன் கட்டுப்பாட்டு அமைப்புகள் தயாராக உள்ளன. என்ன உதவி செய்ய வேண்டும்?"
+                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "சியு ப்ரோ தயார் நிலையில் உள்ளது. உங்கள் ஆப்லைன் குரல் கட்டளைக்காக காத்திருக்கிறேன்."
                 }
             }
             ResponseLanguage.ENGLISH -> {
                 when (currentPersona) {
-                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "$timeGreetingEng! I'm Alexa. Your offline smart assistant is online. How may I help you today?"
-                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "$timeGreetingEng! Alexa Echo Show smart hub standing by. Ready for offline instructions."
+                    PersonaType.ECHO_CORE, PersonaType.JARVIS -> "$timeGreetingEng! I'm SIU. Your offline smart assistant is online. How may I help you today?"
+                    PersonaType.ECHO_SHOW, PersonaType.EDITH -> "$timeGreetingEng! SIU Pro smart hub standing by. Ready for offline instructions."
                 }
             }
         }
@@ -95,13 +95,13 @@ class PersonaManager {
     fun getIdentity(lang: ResponseLanguage): String {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
-                "Naan unga personal AI assistant Alexa! Internet thevai illama unga phone calls, torch, apps, volume, touchless unlock ellathayum handle pannuven."
+                "Naan unga personal AI assistant Siu! Internet thevai illama unga phone calls, torch, apps, volume, touchless unlock ellathayum handle pannuven."
             }
             ResponseLanguage.TAMIL -> {
-                "நான் அலெக்சா. உங்கள் போனை முழுமையாக இணையம் இல்லாமல் இயக்கும் உங்கள் தனிப்பட்ட AI உதவியாளர்."
+                "நான் உங்கள் ஆப்லைன் AI உதவியாளர் சியு (Siu). உங்கள் போனை முழுமையாக இணையம் இல்லாமல் இயக்கும் குரல் உதவியாளர்."
             }
             ResponseLanguage.ENGLISH -> {
-                "I am Alexa, your personal offline AI assistant. I run locally on your device to execute voice commands and control phone hardware without internet."
+                "I am SIU, your personal offline AI assistant. I run locally on your device to execute voice commands and control phone hardware without internet."
             }
         }
     }
@@ -110,7 +110,7 @@ class PersonaManager {
     fun getHowAreYou(lang: ResponseLanguage): String {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {
-                "Alexa super active-ah iruken! Local processors cool-ah run aagudhu, zero internet latency. Neenga epdi irukinga?"
+                "Siu super active-ah iruken! Local processors cool-ah run aagudhu, zero internet latency. Neenga epdi irukinga?"
             }
             ResponseLanguage.TAMIL -> {
                 "நான் மிகவும் சிறப்பாக இயங்குகிறேன்! அனைத்து ஆப்லைன் அமைப்புகளும் தயார். நீங்கள் எப்படி இருக்கிறீர்கள்?"
@@ -121,7 +121,7 @@ class PersonaManager {
         }
     }
 
-    // Alexa Humor
+    // SIU Humor
     fun getJoke(lang: ResponseLanguage): String {
         return when (lang) {
             ResponseLanguage.TANGLISH -> {

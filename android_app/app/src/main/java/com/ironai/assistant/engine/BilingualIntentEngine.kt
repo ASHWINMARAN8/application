@@ -3,7 +3,7 @@ package com.ironai.assistant.engine
 import java.util.regex.Pattern
 
 /**
- * High-speed offline Natural Language Intent Parser for Alexa Echo Voice Engine.
+ * High-speed offline Natural Language Intent Parser for SIU Voice Engine.
  * Operates in < 2ms with zero network calls and minimal memory footprint (< 4MB RAM).
  * Highly optimized for low-end Android devices (runs smoothly on 2GB-3GB RAM phones).
  */
@@ -107,9 +107,9 @@ class BilingualIntentEngine {
         // 1. Language Detection: Pure Tamil, Tanglish, or English
         val language = detectLanguage(input, lower)
 
-        // 2. Strip wake words if present (Alexa, Hey Alexa, Echo, Amazon)
+        // 2. Strip wake words if present (Siu, Hey Siu, Siiiu, Alexa)
         val cleaned = lower
-            .replace(Regex("^(alexa|hey alexa|echo|amazon|அலெக்சா|ஹேய் அலெக்சா)[\\s,:]*"), "")
+            .replace(Regex("^(siu|hey siu|siiiuuu|siiuu|sii|alexa|hey alexa|echo|amazon|சியு|ஹேய் சியு|அலெக்சா|ஹேய் அலெக்சா)[\\s,:]*"), "")
             .trim()
         val effectiveText = if (cleaned.isNotEmpty()) cleaned else lower
 
@@ -154,7 +154,7 @@ class BilingualIntentEngine {
                 language,
                 input,
                 targetSlot = recipient ?: "Contact",
-                extraSlot = message ?: "Hello from Alexa Assistant"
+                extraSlot = message ?: "Hello from SIU Assistant"
             )
         }
         if (containsAny(effectiveText, "மெசேஜ்", "message", "sms", "message anupu", "msg podu", "send sms")) {
@@ -164,7 +164,7 @@ class BilingualIntentEngine {
                 language,
                 input,
                 targetSlot = recipient ?: "Contact",
-                extraSlot = message ?: "Hello from Alexa Assistant"
+                extraSlot = message ?: "Hello from SIU Assistant"
             )
         }
 
@@ -322,10 +322,10 @@ class BilingualIntentEngine {
         if (containsAny(effectiveText, "joke sollu", "tell me a joke", "ஜோக் சொல்லு", "joke")) {
             return ParsedIntent(CommandType.TELL_JOKE, language, input)
         }
-        if (containsAny(effectiveText, "நீ யாரு", "who are you", "உன் பெயர் என்ன", "what is your name", "ne yaaru", "unga name enna", "about alexa")) {
+        if (containsAny(effectiveText, "நீ யாரு", "who are you", "உன் பெயர் என்ன", "what is your name", "ne yaaru", "unga name enna", "about siu", "about alexa")) {
             return ParsedIntent(CommandType.IDENTITY_QUERY, language, input)
         }
-        if (containsAny(lower, "வணக்கம்", "hello", "hey", "hi", "காலை வணக்கம்", "good morning", "vanakkam", "hey alexa", "alexa", "echo", "amazon", "அலெக்சா", "ஹேய் அலெக்சா")) {
+        if (containsAny(lower, "வணக்கம்", "hello", "hey", "hi", "காலை வணக்கம்", "good morning", "vanakkam", "hey siu", "siu", "siiiuuu", "சியு", "ஹேய் சியு", "hey alexa", "alexa", "echo", "amazon", "அலெக்சா", "ஹேய் அலெக்சா")) {
             return ParsedIntent(CommandType.GREETING, language, input)
         }
 
@@ -362,7 +362,7 @@ class BilingualIntentEngine {
         val pattern = Pattern.compile("(.*?)(?:-க்கு|க்கு|\\s+)கால்\\s*பண்ணு", Pattern.CASE_INSENSITIVE)
         val matcher = pattern.matcher(text)
         if (matcher.find()) {
-            return matcher.group(1)?.replace(Regex("^(நீ|தயவுசெய்து|அலெக்சா)\\s*"), "")?.trim()
+            return matcher.group(1)?.replace(Regex("^(நீ|தயவுசெய்து|சியு|அலெக்சா)\\s*"), "")?.trim()
         }
         return null
     }
