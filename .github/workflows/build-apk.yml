@@ -24,24 +24,20 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
+        cache: 'gradle'
 
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        gradle-version: '8.7'
-
-    - name: Build APK with Gradle
-      run: |
-        chmod +x gradlew
-        ./gradlew assembleDebug --no-daemon
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
       working-directory: android_app
 
-    - name: Prepare APK Release Asset
+    - name: Build APK with Gradle
+      run: ./gradlew assembleDebug --no-daemon --stacktrace
+      working-directory: android_app
+
+    - name: Prepare APK Release Assets
       run: |
         cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/SIU-Offline-AI-v1.0.0.apk
+        cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Alexa-Offline-AI-v1.0.0.apk
         cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/JOE-Tactical-AI-v1.0.0.apk
       working-directory: android_app
 
@@ -58,7 +54,7 @@ jobs:
         tag_name: v1.0.0
         name: "🔵 SIU — Offline Voice AI Assistant v1.0.0 (Android APK)"
         body: |
-          ## 🔵 SIU — Offline Voice AI Assistant (Echo Edition)
+          ## 🔵 SIU — Offline Voice AI Assistant
           ### 100% Offline Personal Voice AI for Android (English, தமிழ் & Tanglish)
 
           ### 📲 Direct APK Download:
@@ -71,11 +67,14 @@ jobs:
           - 🎙️ **100% Offline Voice Automation**: Zero internet required, zero cloud latency, 100% private on-device execution.
           - 🗣️ **Trilingual Voice Cadence**: Understands and speaks conversational **Tanglish**, pure **Tamil (தமிழ்)**, and **English**.
           - 🔦 **Hardware & System Controls**: Torch/Flashlight, Dials Phone Calls, WhatsApp launcher, App Launcher, Volume adjustments, Lock screen, timers, and battery telemetry.
-          - 🔓 **Touchless Screen Unlock**: Wake and dismiss device keyguards touchlessly using your voice ("Alexa, phone ah unlock pannu").
-          - 🔵 **Amazon Echo Signature Experience**:
-            - **Alexa Echo Core**: Signature Cyan & Deep Electric Blue glowing light ring.
-            - **Alexa Echo Show**: Smart display hub theme.
+          - 🔓 **Touchless Screen Unlock**: Wake and dismiss device keyguards touchlessly using your voice ("Siu, phone ah unlock pannu").
+          - 🔵 **SIU Core & Pro Personas**:
+            - **SIU Core**: Signature Cyan & Deep Electric Blue glowing ring.
+            - **SIU Pro**: Amber Gold smart display hub theme.
           - ⚡ **Low-End Phone Optimized**: Operates on < 14MB RAM, < 2ms latency on 2GB-3GB RAM devices.
         files: |
           android_app/app/build/outputs/apk/debug/SIU-Offline-AI-v1.0.0.apk
+          android_app/app/build/outputs/apk/debug/Alexa-Offline-AI-v1.0.0.apk
           android_app/app/build/outputs/apk/debug/JOE-Tactical-AI-v1.0.0.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
