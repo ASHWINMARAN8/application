@@ -173,7 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="SIU: Hello! Complete device settings & hardware control 100% offline."
+            android:text="SIU: Hello! Complete device settings &amp; hardware control 100% offline."
             android:textColor="@color/text_white"
             android:textSize="14sp"
             android:textStyle="bold" />
