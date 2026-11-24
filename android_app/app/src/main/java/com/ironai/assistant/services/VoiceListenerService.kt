@@ -584,7 +584,14 @@ class VoiceListenerService : Service(), RecognitionListener {
             CommandType.IDENTITY_QUERY -> personaManager.getIdentity(lang)
             CommandType.GREETING -> personaManager.getGreeting(lang)
 
-            CommandType.UNKNOWN, else -> {
+            CommandType.UNKNOWN -> {
+                when (lang) {
+                    ResponseLanguage.TANGLISH -> "Neenga sonnadhu kettuchu: \"${parsed.rawText}\". SIU unga device-la execute panna ready!"
+                    ResponseLanguage.TAMIL -> "உங்கள் கட்டளை \"${parsed.rawText}\" பெறப்பட்டது."
+                    ResponseLanguage.ENGLISH -> "I heard \"${parsed.rawText}\". Executing on your device."
+                }
+            }
+            else -> {
                 when (lang) {
                     ResponseLanguage.TANGLISH -> "Neenga sonnadhu kettuchu: \"${parsed.rawText}\". SIU unga device-la execute panna ready!"
                     ResponseLanguage.TAMIL -> "உங்கள் கட்டளை \"${parsed.rawText}\" பெறப்பட்டது."
