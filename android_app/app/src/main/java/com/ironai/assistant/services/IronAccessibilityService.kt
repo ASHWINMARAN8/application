@@ -80,8 +80,12 @@ class IronAccessibilityService : AccessibilityService() {
     fun openQuickSettings(): Boolean = performGlobalAction(GLOBAL_ACTION_QUICK_SETTINGS)
     fun openRecents(): Boolean = performGlobalAction(GLOBAL_ACTION_RECENTS)
     fun openPowerDialog(): Boolean = performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)
-    fun lockScreen(): Boolean = performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
-    fun takeScreenshot(): Boolean = performGlobalAction(GLOBAL_ACTION_TAKE_SCREENSHOT)
+    fun lockScreen(): Boolean = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+        performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
+    } else false
+    fun takeScreenshot(): Boolean = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+        performGlobalAction(GLOBAL_ACTION_TAKE_SCREENSHOT)
+    } else false
 
     /**
      * Finds and clicks a button by its text or content description
