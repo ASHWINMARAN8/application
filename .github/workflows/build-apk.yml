@@ -44,9 +44,9 @@ jobs:
       if: failure()
       run: |
         echo "## ⚠️ SIU Android Build Diagnostic Log" > build_summary.txt
-        echo "```text" >> build_summary.txt
-        tail -n 250 build.log >> build_summary.txt
-        echo "```" >> build_summary.txt
+        echo "" >> build_summary.txt
+        tail -n 150 build.log >> build_summary.txt
+        cp build.log build_full.log
       working-directory: android_app
 
     - name: Publish Diagnostics to Release on Failure
@@ -56,6 +56,7 @@ jobs:
         tag_name: v1.0.0
         name: "🔴 SIU Build Diagnostic Report"
         body_path: android_app/build_summary.txt
+        files: android_app/build_full.log
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
