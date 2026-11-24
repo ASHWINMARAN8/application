@@ -53,4 +53,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-service:2.8.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("androidx.cardview:cardview:1.0.0")
 }
